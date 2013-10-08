@@ -15,7 +15,7 @@
            notification_read_flag,
            FLOOR(DATE_FORMAT(creation_time, '%Y%m%d%H%i%s%f')/1000) as creation_time,
            FLOOR(DATE_FORMAT(updated_time, '%Y%m%d%H%i%s%f')/1000) as updated_time
-      FROM device_tbl
+      FROM notification_tbl
      <where>
            <if test="!empty(memberId)">
            AND member_id=#{memberId}
@@ -38,7 +38,7 @@
 	<!-- 알림 갯수 조회 -->
     <select id="selectNotificationCount" parameterType="NotificationDto" resultType="int">
     SELECT count(*) as cnt
-      FROM device_tbl
+      FROM notification_tbl
      <where>
            <if test="!empty(memberId)">
            AND member_id=#{memberId}

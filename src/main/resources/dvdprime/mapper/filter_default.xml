@@ -10,7 +10,7 @@
            target_nick,
            FLOOR(DATE_FORMAT(creation_time, '%Y%m%d%H%i%s%f')/1000) as creation_time,
            FLOOR(DATE_FORMAT(updated_time, '%Y%m%d%H%i%s%f')/1000) as updated_time
-      FROM device_tbl
+      FROM filter_tbl
      <where>
            <if test="!empty(memberId)">
            AND member_id=#{memberId}
@@ -21,7 +21,7 @@
 	<!-- 필터 갯수 조회 -->
     <select id="selectFilterCount" parameterType="FilterDto" resultType="int">
     SELECT count(*) as cnt
-      FROM device_tbl
+      FROM filter_tbl
      <where>
            <if test="!empty(memberId)">
            AND member_id=#{memberId}
