@@ -5,7 +5,7 @@
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>ERROR</level>
 		</filter>
-		<smtpHost>${mail.smtp.host}</smtpHost>
+		<smtpHost>127.0.0.1</smtpHost>
 		<to>frantik@gmail.com</to>
 		<from>system@dvdprime.com</from>
 		<subject>[DigitalOcean] Log4J Error Message: %logger{20} - %m</subject>
