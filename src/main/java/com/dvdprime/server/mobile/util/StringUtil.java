@@ -1,0 +1,391 @@
+/**
+ * Copyright 2013 작은광명
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.dvdprime.server.mobile.util;
+
+import java.util.List;
+
+/**
+ * 문자 관련 유틸
+ * 
+ * @author 작은광명
+ * @version 1.0
+ * @created 2013. 10. 7. 오후 3:13:15
+ * @history
+ */
+public class StringUtil
+{
+    public static final String EMPTY = "";
+    
+    private static final int INDEX_NOT_FOUND = -1;
+    
+    /**
+     * <p>
+     * 문자열(String)에 검색문자열(String)이 포함되어 있는지 검사한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.contains(null, *)    = false
+     * StringUtil.contains(*, null)    = false
+     * StringUtil.contains("han", "")  = true
+     * StringUtil.contains("han", "h") = true
+     * StringUtil.contains("han", "H") = false
+     * </pre>
+     * 
+     * @see java.lang.String#indexOf(String)
+     * @param str
+     *            문자열
+     * @param searchStr
+     *            검색문자열
+     * @return 문자열(String)에 검색 문자열이 포함되어 있을때 <code>true</code>, 문자열(String)에 검색 문자열이 포함되어 있지 않을때나, 문자열 또는 검색문자열이 <code>null</code>일때
+     *         <code>false</code>
+     */
+    public static boolean contains(String str, String searchStr)
+    {
+        if (str == null || searchStr == null) { return false; }
+        return str.indexOf(searchStr) > INDEX_NOT_FOUND;
+    }
+    
+    /**
+     * <p>
+     * 문자열(String) List에 검색문자열(String)이 포함되어 있는지 검사한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.contains("han", {"a", "b"}) = true
+     * StringUtil.contains("han", {"aa", "bb"}) = false
+     * </pre>
+     * 
+     * @param str
+     *            문자열
+     * @param keywords
+     *            검색할 문자열 목록
+     * @return
+     */
+    public static boolean contains(String str, String[] keywords)
+    {
+        if (str == null || keywords == null) { return false; }
+        
+        for (String key : keywords)
+        {
+            if (contains(str, key)) { return true; }
+        }
+        
+        return false;
+    }
+    public static boolean contains(String str, List<String> keywords)
+    {
+        if (str == null || keywords == null) { return false; }
+        
+        for (String key : keywords)
+        {
+            if (contains(str, key)) { return true; }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * <p>
+     * 문자열 배열(String Array)에 검색문자열(String)이 포함되어 있는지 검사한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.contains(null, *)    = false
+     * StringUtil.contains(*, null)    = false
+     * StringUtil.contains({"han", "kuk"}, "")  = false
+     * StringUtil.contains({"han", "kuk"}, "h") = false
+     * StringUtil.contains({"han", "kuk"}, "han") = true
+     * </pre>
+     * 
+     * @see java.lang.String#indexOf(String)
+     * @param str
+     *            문자열 배열
+     * @param searchStr
+     *            검색문자열
+     * @return 문자열 배열(String Array)에 검색 문자열과 같은 문자열이 포함되어 있을때 <code>true</code>, 문자열(String)에 검색 문자열이 포함되어 있지 않을때나, 문자열 또는 검색문자열이 <code>null</code>일때
+     *         <code>false</code>
+     */
+    public static boolean contains(String[] arr, String searchStr)
+    {
+        if (arr == null || searchStr == null) { return false; }
+        
+        for (String str : arr)
+            if (equals(str, searchStr)) return true;
+        
+        return false;
+    }
+    
+    // ----------------------------------------------------------------------
+    // 공백/여백문자 검사, 제거, 치환
+    // ----------------------------------------------------------------------
+    
+    /**
+     * <p>
+     * 문자열(String)의 좌우 여백문자(white space)를 제거한후, 공백("")이거나 <code>null</code>인 검사한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.isBlank(null)    = true
+     * StringUtil.isBlank("")      = true
+     * StringUtil.isBlank("   ")   = true
+     * StringUtil.isBlank("han")   = false
+     * StringUtil.isBlank(" han ") = false
+     * </pre>
+     * 
+     * @param str
+     *            문자열
+     * @return
+     */
+    public static boolean isBlank(String str)
+    {
+        if (str == null) { return true; }
+        int strLen = str.length();
+        if (strLen > 0)
+        {
+            for (int i = 0; i < strLen; i++)
+            {
+                if (Character.isWhitespace(str.charAt(i)) == false) { return false; }
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * <p>
+     * 문자열(String)의 좌우 여백문자(white space)를 제거한후, 공백("")이 아니거나 <code>null</code>이 아닌지 검사한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.isNotBlank(null)    = false
+     * StringUtil.isNotBlank("")      = false
+     * StringUtil.isNotBlank("   ")   = false
+     * StringUtil.isNotBlank("han")   = true
+     * StringUtil.isNotBlank(" han ") = true
+     * </pre>
+     * 
+     * @param str
+     *            문자열
+     * @return
+     */
+    public static boolean isNotBlank(String str)
+    {
+        return !isBlank(str);
+    }
+    
+    /**
+     * <p>
+     * 문자열(String)이 공백("")이거나 <code>null</code>인 검사한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.isEmpty(null)    = true
+     * StringUtil.isEmpty("")      = true
+     * StringUtil.isEmpty("   ")   = false
+     * StringUtil.isEmpty("han")   = false
+     * StringUtil.isEmpty(" han ") = false
+     * </pre>
+     * 
+     * 
+     * @param str
+     *            검사할 문자열
+     * @return
+     */
+    public static boolean isEmpty(String str)
+    {
+        return str == null || str.length() == 0;
+    }
+    
+    /**
+     * <p>
+     * 문자열(String)이 공백("")이 아니거나 <code>null</code>이 아닌지 검사한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.isNotEmpty(null)    = false
+     * StringUtil.isNotEmpty("")      = false
+     * StringUtil.isNotEmpty("   ")   = true
+     * StringUtil.isNotEmpty("han")   = true
+     * StringUtil.isNotEmpty(" han ") = true
+     * </pre>
+     * 
+     * @param str
+     *            검사할 문자열
+     * @return
+     */
+    public static boolean isNotEmpty(String str)
+    {
+        return !isEmpty(str);
+    }
+    
+    /**
+     * <p>
+     * 문자열이 숫자로만 구성되어 있는지 검사한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.isNumber(null) = false;
+     * StringUtil.isNumber(&quot;&quot;) = false;
+     * StringUtil.isNumber(&quot;1234&quot;) = true;
+     * StringUtil.isNumber(&quot;abc123&quot;) = false;
+     * </pre>
+     * 
+     * @param str
+     *            검사할 문자열
+     * @return
+     */
+    public static boolean isNumber(String str)
+    {
+        try
+        {
+            Integer.valueOf(str);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    // ----------------------------------------------------------------------
+    // 문자열 비교
+    // ----------------------------------------------------------------------
+    /**
+     * <p>
+     * 두 문자열(String)이 일치하면 <code>true</code>을 반환한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.equals(null, null)   = true
+     * StringUtil.equals(null, "")     = false
+     * StringUtil.equals("", null)     = false
+     * StringUtil.equals(null, "han")  = false
+     * StringUtil.equals("han", null)  = false
+     * StringUtil.equals("han", "han") = true
+     * StringUtil.equals("han", "HAN") = false
+     * </pre>
+     * 
+     * @see java.lang.String#equals(Object)
+     * @param str1
+     *            첫번째 문자열
+     * @param str2
+     *            두번째 문자열
+     * @return 문자열(String)이 일치하면 <code>true</code>
+     */
+    public static boolean equals(String str1, String str2)
+    {
+        return str1 == null ? str2 == null : str1.equals(str2);
+    }
+    
+    /**
+     * <p>
+     * 대소문자를 무시한, 두 문자열(String)이 일치하면 <code>true</code>을 반환한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.equalsIgnoreCase(null, null)   = true
+     * StringUtil.equalsIgnoreCase(null, "")     = false
+     * StringUtil.equalsIgnoreCase("", null)     = false
+     * StringUtil.equalsIgnoreCase(null, "han")  = false
+     * StringUtil.equalsIgnoreCase("han", null)  = false
+     * StringUtil.equalsIgnoreCase("han", "han") = true
+     * StringUtil.equalsIgnoreCase("han", "HAN") = true
+     * </pre>
+     * 
+     * @see java.lang.String#equalsIgnoreCase(String)
+     * @param str1
+     *            첫번째 문자열
+     * @param str2
+     *            두번째 문자열
+     * @return 대소문자를 무시한 문자열(String)이 일치하면 <code>true</code>
+     */
+    public static boolean equalsIgnoreCase(String str1, String str2)
+    {
+        return str1 == null ? str2 == null : str1.equalsIgnoreCase(str2);
+    }
+    
+    /**
+     * <p>
+     * 시작 인덱스부터 문자열을 자는다.
+     * </p>
+     * <p>
+     * 시작 인덱스가 0보다 작거나, 문자열의 총길이보다 크면 공백("")을 반환한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.substring(null, *)    = null
+     * StringUtil.substring("", *)      = ""
+     * StringUtil.substring("han", 1)   = "an"
+     * StringUtil.substring("han", 615) = ""
+     * StringUtil.substring("han", -1)  = ""
+     * </pre>
+     * 
+     * @param str
+     * @param beginIndex
+     *            시작 인덱스(0부터 시작)
+     * @return
+     */
+    public static String substring(String str, int beginIndex)
+    {
+        if (str == null) { return null; }
+        
+        if (beginIndex < 0) { return EMPTY; }
+        
+        if (beginIndex > str.length()) { return EMPTY; }
+        
+        return str.substring(beginIndex);
+    }
+    
+    /**
+     * <p>
+     * 시작 인덱스부터 끝 인덱스까지 문자열을 자는다.
+     * </p>
+     * <p>
+     * 시작 인덱스또는 끝 인덱스가 0보다 작으면 공백("")을 반환한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.substring(null, *, *)    = null
+     * StringUtil.substring("", *, *)      = ""
+     * StringUtil.substring("han", 1, 2)   = "a"
+     * StringUtil.substring("han", 1, 3)   = "an"
+     * StringUtil.substring("han", 1, 615) = "an"
+     * StringUtil.substring("han", -1, *)  = ""
+     * StringUtil.substring("han", *, -1)  = ""
+     * </pre>
+     * 
+     * @param str
+     * @param beginIndex
+     * @param endIndex
+     * @return
+     */
+    public static String substring(String str, int beginIndex, int endIndex)
+    {
+        if (str == null) { return null; }
+        
+        if (beginIndex < 0 || endIndex < 0) { return EMPTY; }
+        
+        if (endIndex > str.length())
+        {
+            endIndex = str.length();
+        }
+        
+        if (beginIndex > endIndex || beginIndex > str.length()) { return EMPTY; }
+        
+        return str.substring(beginIndex, endIndex);
+    }
+    
+}

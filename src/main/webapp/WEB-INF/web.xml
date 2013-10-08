@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" id="dvdprime" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name>server-mobile-dp</display-name>
+
+	<!-- Resource Loader & Warming-Up-->
+	<listener>
+		<listener-class>com.dvdprime.server.mobile.listener.ResourceWarmupListener</listener-class>
+	</listener>
+
+	<!-- Jersey Access Logging Filter -->
+	<filter>
+		<filter-name>JerseyAccessLoggingFilter</filter-name>
+		<filter-class>com.dvdprime.server.mobile.filter.JerseyAccessLoggingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>JerseyAccessLoggingFilter</filter-name>
+		<url-pattern>/dp/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Jersey Servlet Logging Filter -->
+	<filter>
+		<filter-name>JerseyServletLoggingFilter</filter-name>
+		<filter-class>com.dvdprime.server.mobile.filter.JerseyServletLoggingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>JerseyServletLoggingFilter</filter-name>
+		<url-pattern>/dp/*</url-pattern>
+	</filter-mapping>
+
+	<!-- RESTful Servlet 설정 -->
+	<servlet>
+		<servlet-name>DvdPrime REST API Service</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>com.dvdprime.server.mobile.resource</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<!-- "Viewable" JSP root is placed in the /WEB-INF/jsp directory. This means that it's not accessible outside of the web app. There's no way to construct a URL that can retrieve it. -->
+		<init-param>
+			<param-name>com.sun.jersey.config.property.JSPTemplatesBasePath</param-name>
+			<param-value>/WEB-INF/jsp</param-value>
+		</init-param>
+		<!-- Declare what file type should be accessible thru Jersey without being interpreted as REST call -->
+		<init-param>
+			<param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
+			<param-value>(/assets/(images|script|css)/?.*)|(/assets/.*\.jsp)|(/WEB-INF/jsp/.*\.jsp)|(/WEB-INF/jsp/.*\.jspf)|(/v1/.*\.html)|(/favicon\.ico)|(/robots\.txt)</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DvdPrime REST API Service</servlet-name>
+		<url-pattern>/dp/*</url-pattern>
+	</servlet-mapping>
+
+</web-app>

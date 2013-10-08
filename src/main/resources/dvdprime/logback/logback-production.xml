@@ -1,0 +1,78 @@
+<included>	
+	<!-- 에러메일 발송 -->
+	<appender name="smtp" class="ch.qos.logback.classic.net.SMTPAppender">
+		<!-- deny all events with a level below ERROR -->
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<smtpHost>${mail.smtp.host}</smtpHost>
+		<to>frantik@gmail.com</to>
+		<from>system@dvdprime.com</from>
+		<subject>[DigitalOcean] Log4J Error Message: %logger{20} - %m</subject>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date %-5level %logger - %message%n</pattern>
+		</layout>  
+		
+		<cyclicBufferTracker class="ch.qos.logback.core.spi.CyclicBufferTracker">
+			<!-- send just one log entry per email -->
+			<bufferSize>10</bufferSize>
+		</cyclicBufferTracker>
+	</appender>
+	
+	<!-- 기본 로그 파일 -->
+	<appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log4j.logs.path}default.log</file>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${log4j.logs.path}backup.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+
+			<!-- keep 7 days worth of history -->
+			<maxHistory>7</maxHistory>
+
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 300MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>[%d{HH:mm:ss.SSS}] [%thread] %-5level %logger{32} [%file:%line] - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 접속 로그 파일 -->
+	<appender name="accessfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log4j.logs.path}access.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${log4j.logs.path}access.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>[%d{HH:mm:ss.SSS}] [%thread] %-5level %logger{32} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 에러 로그 파일 -->
+	<appender name="errorfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<file>${log4j.logs.path}error.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${log4j.logs.path}error.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>7</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>[%d{HH:mm:ss.SSS}] [%thread] %-5level %logger{32} [%file:%line] - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- Restful 접속정보 인터셉터의 접속로그 -->
+	<logger name="com.dvdprime.server.mobile.filter.JerseyAccessLoggingFilter" level="info" additivity="false">
+		<appender-ref ref="accessfile" />
+	</logger>
+	
+</included>
