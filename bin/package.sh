@@ -1,4 +1,4 @@
-HOME=/home/frantik/project/sever-mobile-dp
+HOME=/home/frantik/project/server-mobile-dp
 
 echo "Starting package"
 
