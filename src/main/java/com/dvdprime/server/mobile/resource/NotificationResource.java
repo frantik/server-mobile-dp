@@ -61,7 +61,7 @@ public class NotificationResource
     public Response doPost(final MultivaluedMap<String, String> formParameters)
     {
         NotificationRequest param = NotificationRequest.fromMultiValuedFormParameters(formParameters);
-        logger.info("Notification POST params: {0}", param);
+        logger.info("Notification POST params: {}", param);
         
         try
         {

@@ -70,7 +70,7 @@ public class FilterResource
     String targetNick)
     {
         FilterRequest params = new FilterRequest(id, targetId, targetNick);
-        logger.info("Filter POST params: {0}", params);
+        logger.info("Filter POST params: {}", params);
         
         try
         {
@@ -107,7 +107,7 @@ public class FilterResource
     String id, @QueryParam("targetId")
     String targetId)
     {
-        logger.info("Filter DELETE params: {0}, {1}", new Object[] { id, targetId });
+        logger.info("Filter DELETE params: {}, {}", new Object[] { id, targetId });
         
         try
         {

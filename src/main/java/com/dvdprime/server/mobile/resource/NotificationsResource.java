@@ -57,7 +57,7 @@ public class NotificationsResource
     String id)
     {
         NotificationRequest param = new NotificationRequest(id, page, limit, startTime);
-        logger.info("Notification GET params: {0}", param);
+        logger.info("Notification GET params: {}", param);
         
         try
         {

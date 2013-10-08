@@ -91,7 +91,7 @@ public class DeviceDAO
      */
     public int updateDeviceOne(DeviceDTO dto) throws Exception
     {
-        return sqlSession.update("Config.updateDeviceOne", dto);
+        return sqlSession.update("Device.updateDeviceOne", dto);
     }
     
     /**
@@ -104,7 +104,7 @@ public class DeviceDAO
      */
     public int deleteDeviceOne(DeviceDTO dto) throws Exception
     {
-        return sqlSession.update("Config.deleteDeviceOne", dto);
+        return sqlSession.update("Device.deleteDeviceOne", dto);
     }
     
 }

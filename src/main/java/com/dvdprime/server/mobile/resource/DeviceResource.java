@@ -76,7 +76,7 @@ public class DeviceResource
     String version)
     {
         DeviceRequest param = new DeviceRequest(id, token, version);
-        logger.info("Device POST params: {0}", param);
+        logger.info("Device POST params: {}", param);
         
         try
         {
@@ -115,7 +115,7 @@ public class DeviceResource
     String id, @QueryParam("token")
     String token)
     {
-        logger.info("Device DELETE params: {0}, {1}", new Object[] { id, token });
+        logger.info("Device DELETE params: {}, {}", new Object[] { id, token });
         
         try
         {

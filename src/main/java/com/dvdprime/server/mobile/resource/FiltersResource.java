@@ -56,7 +56,7 @@ public class FiltersResource
     public Response Get(@QueryParam("id")
     String id)
     {
-        logger.info("Filter GET params: {0}", id);
+        logger.info("Filter GET params: {}", id);
         
         try
         {
