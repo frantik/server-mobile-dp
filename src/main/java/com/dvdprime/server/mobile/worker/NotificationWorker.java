@@ -81,6 +81,7 @@ public class NotificationWorker
         {
             try
             {
+                stopWatch.reset();
                 NotificationBO bo = new NotificationBO();
                 List<NotificationDTO> resultList = bo.searchNotificationSendList();
                 
