@@ -56,6 +56,17 @@ public class NotificationDAO
     }
     
     /**
+     * 알림 전송 대기 목록 조회
+     * 
+     * @return
+     * @throws Exception
+     */
+    public List<NotificationDTO> selectNotificationSendList() throws Exception
+    {
+        return sqlSession.selectList("Notification.selectNotificationSendList");
+    }
+    
+    /**
      * 알림 갯수 조회
      * 
      * @param dto
@@ -76,7 +87,7 @@ public class NotificationDAO
      * @return
      * @throws Exception
      */
-    public int insertFilterOne(NotificationDTO dto) throws Exception
+    public int insertNotificationOne(NotificationDTO dto) throws Exception
     {
         return sqlSession.insert("Notification.insertNotificationOne", dto);
     }

@@ -30,9 +30,35 @@
            AND <![CDATA[creation_time < CONCAT(LEFT(#{creationDecimal}, 14), '.', SUBSTRING(#{creationDecimal}, 15))]]>
            </if>
      </where>
+     ORDER BY creation_time DESC
      <if test="limitCount > 0">
      LIMIT #{offset}, #{limitCount}
      </if>
+    </select>
+    
+	<!-- 알림 전송 대기 목록 조회 -->
+    <select id="selectNotificationSendList" resultMap="NotificationMap.worker-map">
+    SELECT A.notification_seq,
+           A.member_id,
+           A.notification_type,
+           A.notification_title,
+           A.notification_message,
+           A.notification_target_url,
+           A.notification_target_id,
+           A.notification_status,
+           A.notification_read_flag,
+           FLOOR(DATE_FORMAT(A.creation_time, '%Y%m%d%H%i%s%f')/1000) as creation_time,
+           FLOOR(DATE_FORMAT(A.updated_time, '%Y%m%d%H%i%s%f')/1000) as updated_time,
+           B.device_token,
+           B.device_version,
+           C.config_enabled
+      FROM notification_tbl A
+           LEFT OUTER JOIN device_tbl B
+             ON (A.member_id=B.member_id)
+           LEFT OUTER JOIN config_tbl C
+             ON (A.member_id=C.member_id AND C.config_type='01')
+     WHERE A.notification_status='10'
+     ORDER BY A.creation_time DESC
     </select>
     
 	<!-- 알림 갯수 조회 -->
@@ -42,6 +68,9 @@
      <where>
            <if test="!empty(memberId)">
            AND member_id=#{memberId}
+           </if>
+           <if test="!empty(dups)">
+           AND notification_dups=#{dups}
            </if>
            <if test="!empty(status)">
            AND notification_status=#{status}
@@ -54,8 +83,8 @@
     
     <!-- 알림 추가 -->
     <insert id="insertNotificationOne" parameterType="NotificationDto">
-    INSERT INTO notification_tbl (member_id, notification_type, notification_title, notification_message, notification_target_url, notification_target_id, creation_time, updated_time)
-    VALUES (#{memberId}, #{type}, #{title}, #{message}, #{targetUrl}, #{targetId}, #{creationDecimal}, #{updatedDecimal})
+    INSERT INTO notification_tbl (member_id, notification_type, notification_dups, notification_title, notification_message, notification_target_url, notification_target_id, creation_time, updated_time)
+    VALUES (#{memberId}, #{type}, #{dups}, #{title}, #{message}, #{targetUrl}, #{targetId}, #{creationDecimal}, #{updatedDecimal})
     </insert>
     
     <!-- 알림 수정 -->
@@ -68,12 +97,21 @@
            <if test="!empty(readFlag)">
            , notification_read_flag=#{readFlag}
            </if>
+           <if test="!empty(message)">
+           , notification_message=#{message}
+           </if>
+           <if test="!empty(targetId)">
+           , notification_target_id=#{targetId}
+           </if>
      <where>
         <if test="seq > 0">
         AND notification_seq=#{seq}
         </if>
         <if test="!empty(memberId)">
         AND member_id=#{memberId}
+        </if>
+        <if test="!empty(dups)">
+        AND notification_dups=#{dups}
         </if>
      </where>
       LIMIT 1

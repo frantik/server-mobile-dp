@@ -4,7 +4,7 @@
 <mapper namespace="NotificationMap">
 
     <resultMap id="default-map" type="NotificationDto">
-        <id property="seq" column="notificationr_seq" javaType="int" />
+        <id property="seq" column="notification_seq" javaType="int" />
         <result property="memberId" column="member_id"/>
         <result property="type" column="notification_type"/>
         <result property="title" column="notification_title" />
@@ -15,6 +15,23 @@
         <result property="readFlag" column="notification_read_flag" />
         <result property="creationTime" column="creation_time" javaType="long" />
         <result property="updatedTime" column="updated_time" javaType="long" />
+    </resultMap>
+    
+    <resultMap id="worker-map" type="NotificationDto">
+        <result property="seq" column="notification_seq" javaType="int" />
+        <result property="memberId" column="member_id"/>
+        <result property="type" column="notification_type"/>
+        <result property="title" column="notification_title" />
+        <result property="message" column="notification_message" />
+        <result property="targetUrl" column="notification_target_url" />
+        <result property="targetId" column="notification_target_id" />
+        <result property="status" column="notification_status" />
+        <result property="readFlag" column="notification_read_flag" />
+        <result property="creationTime" column="creation_time" javaType="long" />
+        <result property="updatedTime" column="updated_time" javaType="long" />
+        <result property="token" column="device_token" />
+        <result property="version" column="device_version" />
+        <result property="enabled" column="config_enabled" />
     </resultMap>
     
 </mapper>

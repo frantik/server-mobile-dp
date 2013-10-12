@@ -26,7 +26,7 @@ import com.dvdprime.server.mobile.request.DeviceRequest;
 
 /**
  * 디바이스 제어 로직
- *
+ * 
  * @author 작은광명
  * @version 1.0
  * @created 2013. 10. 8. 오후 11:58:10
@@ -36,6 +36,34 @@ public class DeviceBO
 {
     /** Logger */
     private Logger logger = LoggerFactory.getLogger(DeviceBO.class);
+    
+    /**
+     * 디바이스 정보 조회
+     * 
+     * @param memberId
+     *            회원 아이디
+     * @param token
+     *            디바이스 토큰
+     * @return
+     */
+    public DeviceDTO searchDeviceOne(String memberId, String token)
+    {
+        DeviceDTO result = null;
+        
+        if (memberId != null && token != null)
+        {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession())
+            {
+                result = new DeviceDAO(sqlSession).selectDeviceOne(new DeviceDTO(memberId, token));
+            }
+            catch (Exception e)
+            {
+                logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
+            }
+        }
+        
+        return result;
+    }
     
     /**
      * 회원 디바이스 정보 추가
@@ -53,6 +81,32 @@ public class DeviceBO
             try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
             {
                 result = new DeviceDAO(sqlSession).insertDeviceOne(new DeviceDTO(request)) > 0;
+            }
+            catch (Exception e)
+            {
+                logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
+            }
+        }
+        
+        return result;
+    }
+    
+    /**
+     * 디바이스 정보 수정
+     * 
+     * @param dto
+     *            {@link DeviceDTO}
+     * @return
+     */
+    public boolean modifyDeviceOne(DeviceDTO dto)
+    {
+        boolean result = false;
+        
+        if (dto.getMemberId() != null && dto.getToken() != null)
+        {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
+            {
+                result = new DeviceDAO(sqlSession).updateDeviceOne(dto) > 0;
             }
             catch (Exception e)
             {

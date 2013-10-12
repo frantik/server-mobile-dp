@@ -28,12 +28,13 @@ import com.dvdprime.server.mobile.factory.DaoFactory;
 import com.dvdprime.server.mobile.model.NotificationDTO;
 import com.dvdprime.server.mobile.request.NotificationRequest;
 import com.dvdprime.server.mobile.util.DateUtil;
+import com.dvdprime.server.mobile.util.StringUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
 /**
  * 알림 제어 로직
- *
+ * 
  * @author 작은광명
  * @version 1.0
  * @created 2013. 10. 8. 오후 11:58:35
@@ -88,6 +89,57 @@ public class NotificationBO
     }
     
     /**
+     * 알림 전송할 목록 조회
+     * 
+     * @return
+     */
+    public List<NotificationDTO> searchNotificationSendList()
+    {
+        List<NotificationDTO> mResult = null;
+        
+        try (SqlSession sqlSession = DaoFactory.getInstance().openSession())
+        {
+            mResult = new NotificationDAO(sqlSession).selectNotificationSendList();
+        }
+        catch (Exception e)
+        {
+            logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
+        }
+        
+        return mResult;
+    }
+    
+    /**
+     * 확인 안한 알림갯수 조회
+     * 
+     * @param memberId
+     *            회원 아이디
+     * @return
+     */
+    public int searchNotificationCount(String memberId)
+    {
+        int result = 0;
+        
+        if (memberId != null)
+        {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession())
+            {
+                NotificationDTO dto = new NotificationDTO();
+                dto.setMemberId(memberId);
+                ;
+                dto.setReadFlag(Const.READ_FLAG_01);
+                result = new NotificationDAO(sqlSession).selectNotificationCount(dto);
+            }
+            catch (Exception e)
+            {
+                logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
+            }
+        }
+        
+        return result;
+    }
+    
+    /**
      * 알림 정보 등록
      * 
      * @param request
@@ -105,7 +157,28 @@ public class NotificationBO
                 NotificationDAO dao = new NotificationDAO(sqlSession);
                 for (String id : Splitter.on(",").omitEmptyStrings().trimResults().split(request.getIds()))
                 {
-                    result = dao.insertFilterOne(new NotificationDTO(id, request)) > 0;
+                    NotificationDTO dto = new NotificationDTO(id, request);
+                    // 댓글 알림일 경우
+                    if (StringUtil.equals(request.getType(), Const.TYPE_CMT))
+                    {
+                        String dups = new StringBuffer().append(StringUtil.getParamValue(request.getTargetUrl(), "major")).append(StringUtil.getParamValue(request.getTargetUrl(), "minor"))
+                                .append(StringUtil.getParamValue(request.getTargetUrl(), "master_id")).append(StringUtil.getParamValue(request.getTargetUrl(), "bbslist_id")).toString();
+                        dto.setDups(dups);
+                        if (dao.selectNotificationCount(dto) > 0)
+                        {
+                            dto.setReadFlag(Const.READ_FLAG_01);
+                            dto.setStatus(Const.STATUS_READY);
+                            dao.updateNotificationOne(dto);
+                        }
+                        else
+                        {
+                            dao.insertNotificationOne(dto);
+                        }
+                    }
+                    else if (StringUtil.equals(request.getType(), Const.TYPE_MEMO))
+                    {
+                        result = dao.insertNotificationOne(new NotificationDTO(id, request)) > 0;
+                    }
                 }
             }
             catch (Exception e)
@@ -115,5 +188,26 @@ public class NotificationBO
         }
         
         return result;
+    }
+    
+    /**
+     * 알림 메시지 정보 수정
+     * 
+     * @param dto
+     *            {@link NotificationDTO}
+     */
+    public void modifyNotificationOne(NotificationDTO dto)
+    {
+        if (dto.getSeq() > 0)
+        {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
+            {
+                new NotificationDAO(sqlSession).updateNotificationOne(dto);
+            }
+            catch (Exception e)
+            {
+                logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
+            }
+        }
     }
 }

@@ -16,7 +16,6 @@
 package com.dvdprime.server.mobile.resource;
 
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -31,37 +30,38 @@ import org.slf4j.LoggerFactory;
 
 import com.dvdprime.server.mobile.bo.NotificationBO;
 import com.dvdprime.server.mobile.constants.ResponseMessage;
-import com.dvdprime.server.mobile.reponse.ListResponse;
-import com.dvdprime.server.mobile.request.NotificationRequest;
+import com.dvdprime.server.mobile.reponse.DataResponse;
+import com.google.common.collect.ImmutableMap;
 
 /**
- * 알림 정보 조회
+ * 카운트 조회
  * 
  * @author 작은광명
- * 
  */
-@Path("/notifications")
+@Path("/count")
 @Produces(MediaType.APPLICATION_JSON)
-public class NotificationsResource
+public class CountResource
 {
     /** Logger */
-    private final Logger logger = LoggerFactory.getLogger(NotificationsResource.class);
+    private final Logger logger = LoggerFactory.getLogger(CountResource.class);
     
+    /**
+     * 설정 정보 목록 요청
+     * 
+     * @param id
+     *            회원 아이디
+     * @return
+     */
     @GET
-    public Response doGet(@DefaultValue("1")
-    @QueryParam("page")
-    int page, @DefaultValue("20")
-    @QueryParam("limit")
-    int limit, @QueryParam("startTime")
-    long startTime, @QueryParam("id")
+    public Response doGet(@QueryParam("id")
     String id)
     {
-        NotificationRequest param = new NotificationRequest(id, page, limit, startTime);
-        logger.info("Notification GET params: {}", param);
+        logger.info("Count GET params: id={}", id);
         
         try
         {
-            return Response.ok(new ListResponse(new NotificationBO().searchNotificationList(param))).build();
+            int unreadCount = new NotificationBO().searchNotificationCount(id);
+            return Response.ok(new DataResponse(ImmutableMap.builder().put("notification", unreadCount).build())).build();
         }
         catch (Exception e)
         {
@@ -86,5 +86,4 @@ public class NotificationsResource
     {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
 }

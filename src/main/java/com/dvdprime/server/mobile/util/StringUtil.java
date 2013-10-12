@@ -15,7 +15,10 @@
  */
 package com.dvdprime.server.mobile.util;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * 문자 관련 유틸
@@ -49,8 +52,7 @@ public class StringUtil
      *            문자열
      * @param searchStr
      *            검색문자열
-     * @return 문자열(String)에 검색 문자열이 포함되어 있을때 <code>true</code>, 문자열(String)에 검색 문자열이 포함되어 있지 않을때나, 문자열 또는 검색문자열이 <code>null</code>일때
-     *         <code>false</code>
+     * @return 문자열(String)에 검색 문자열이 포함되어 있을때 <code>true</code>, 문자열(String)에 검색 문자열이 포함되어 있지 않을때나, 문자열 또는 검색문자열이 <code>null</code>일때 <code>false</code>
      */
     public static boolean contains(String str, String searchStr)
     {
@@ -85,6 +87,7 @@ public class StringUtil
         
         return false;
     }
+    
     public static boolean contains(String str, List<String> keywords)
     {
         if (str == null || keywords == null) { return false; }
@@ -115,8 +118,7 @@ public class StringUtil
      *            문자열 배열
      * @param searchStr
      *            검색문자열
-     * @return 문자열 배열(String Array)에 검색 문자열과 같은 문자열이 포함되어 있을때 <code>true</code>, 문자열(String)에 검색 문자열이 포함되어 있지 않을때나, 문자열 또는 검색문자열이 <code>null</code>일때
-     *         <code>false</code>
+     * @return 문자열 배열(String Array)에 검색 문자열과 같은 문자열이 포함되어 있을때 <code>true</code>, 문자열(String)에 검색 문자열이 포함되어 있지 않을때나, 문자열 또는 검색문자열이 <code>null</code>일때 <code>false</code>
      */
     public static boolean contains(String[] arr, String searchStr)
     {
@@ -319,6 +321,46 @@ public class StringUtil
     
     /**
      * <p>
+     * 문자열을 구분자로 나누어서, 문자열 배열로 만든다.
+     * </p>
+     * <p>
+     * 배열의 문자열 중에 <code>null</code>과 공백("")도 포함한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.split("h-a-n", "-") = ["h", "a", "n"]
+     * StringUtil.split("h--n", "-")  = ["h", "", "n"]
+     * StringUtil.split(null, *)      = null
+     * </pre>
+     * 
+     * @param str
+     *            문자열
+     * @param separator
+     *            구분자
+     * @return 구분자로 나누어진 문자열 배열
+     */
+    public static String[] split(String str, String separator)
+    {
+        if (str == null) { return null; }
+        String[] result;
+        int i = 0; // index into the next empty array element
+        
+        // --- Declare and create a StringTokenizer
+        StringTokenizer st = new StringTokenizer(str, separator);
+        // --- Create an array which will hold all the tokens.
+        result = new String[st.countTokens()];
+        
+        // --- Loop, getting each of the tokens
+        while (st.hasMoreTokens())
+        {
+            result[i++] = st.nextToken();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * <p>
      * 시작 인덱스부터 문자열을 자는다.
      * </p>
      * <p>
@@ -388,4 +430,71 @@ public class StringUtil
         return str.substring(beginIndex, endIndex);
     }
     
+    /**
+     * URL에서 해당 파라미터를 제외하고 반환한다.
+     * 
+     * @param url
+     * @param excepts
+     * @return
+     */
+    public static String removeParameter(String url, List<String> excepts)
+    {
+        if (url == null) { return null; }
+        StringBuffer sb = new StringBuffer();
+        
+        try
+        {
+            URL mUrl = new URL(url);
+            sb.append(mUrl.getProtocol()).append("://").append(mUrl.getHost()).append(mUrl.getPath()).append("?");
+            String[] params = split(mUrl.getQuery(), "&");
+            for (String p : params)
+            {
+                String[] arr = split(p, "=");
+                if (!excepts.contains(arr[0]))
+                {
+                    sb.append("&").append(p);
+                }
+            }
+        }
+        catch (MalformedURLException e)
+        {
+            return null;
+        }
+        
+        return sb.toString();
+    }
+    
+    /**
+     * URL의 파라미터의 값을 반환
+     * 
+     * @param url
+     *            URL
+     * @param param
+     *            파라미터명
+     * @return
+     */
+    public static String getParamValue(String url, String param)
+    {
+        if ((url == null) || (param == null)) return null;
+        
+        StringBuffer sb = new StringBuffer();
+        try
+        {
+            String[] arrStr = split(new URL(url).getQuery(), "&");
+            for (String str : arrStr)
+            {
+                String[] compare = split(str, "=");
+                if (equals(param, compare[0]))
+                {
+                    sb.append(compare[1]);
+                    break;
+                }
+            }
+        }
+        catch (MalformedURLException e)
+        {
+        }
+        
+        return sb.toString();
+    }
 }

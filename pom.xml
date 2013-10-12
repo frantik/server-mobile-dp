@@ -170,6 +170,13 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.build.timestamp.format>yyyyMMddHH</maven.build.timestamp.format>
 	</properties>
+	
+	<repositories>
+		<repository>
+			<id>gcm-server-repository</id>
+			<url>https://github.com/slorber/gcm-server-repository/raw/master/releases/</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 	
@@ -336,6 +343,13 @@
 			<version>1.1.1</version>
 		</dependency>
 		
+		<!-- google cloud messaging -->
+		<dependency>
+			<groupId>com.google.android.gcm</groupId>
+			<artifactId>gcm-server</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+
 		<!-- Guava Library -->
 		<dependency>
 			<groupId>com.google.guava</groupId>

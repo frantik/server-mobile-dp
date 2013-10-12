@@ -47,6 +47,11 @@ public class NotificationDTO
     private String type;
     
     /**
+     * 알림 중복방지키
+     */
+    private String dups;
+    
+    /**
      * 알림 제목
      */
     private String title;
@@ -97,6 +102,21 @@ public class NotificationDTO
     private String updatedDecimal;
     
     /**
+     * 디바이스 토큰
+     */
+    private String token;
+    
+    /**
+     * 디바이스 버전
+     */
+    private String version;
+    
+    /**
+     * 알림 수신 활성화 여부
+     */
+    private String enabled;
+    
+    /**
      * offset
      */
     private int offset;
@@ -111,6 +131,10 @@ public class NotificationDTO
     //
     //
     // /////////////////////////////////////////////////////////////////////////////
+    public NotificationDTO()
+    {
+    }
+    
     public NotificationDTO(NotificationRequest req)
     {
         this.memberId = req.getId();
@@ -130,4 +154,5 @@ public class NotificationDTO
         this.creationDecimal = DateUtil.getCurrentTimeDecimal();
         this.updatedDecimal = this.creationDecimal;
     }
+    
 }

@@ -56,6 +56,19 @@ public class DeviceDAO
     }
     
     /**
+     * 디바이스 정보 조회
+     * 
+     * @param dto
+     *            {@link DeviceDTO}
+     * @return
+     * @throws Exception
+     */
+    public DeviceDTO selectDeviceOne(DeviceDTO dto) throws Exception
+    {
+        return (DeviceDTO) sqlSession.selectOne("Device.selectDeviceOne", dto);
+    }
+    
+    /**
      * 디바이스 갯수 조회
      * 
      * @param dto

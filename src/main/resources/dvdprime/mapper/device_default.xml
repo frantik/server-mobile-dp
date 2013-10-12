@@ -21,6 +21,26 @@
      </where>
     </select>
     
+    <!-- 디바이스 정보 조회 -->
+    <select id="selectDeviceOne" parameterType="DeviceDto" resultMap="DeviceMap.default-map">
+    SELECT device_seq,
+           member_id,
+           device_token,
+           device_version,
+           FLOOR(DATE_FORMAT(creation_time, '%Y%m%d%H%i%s%f')/1000) as creation_time,
+           FLOOR(DATE_FORMAT(updated_time, '%Y%m%d%H%i%s%f')/1000) as updated_time
+      FROM device_tbl
+     <where>
+           <if test="!empty(memberId)">
+           AND member_id=#{memberId}
+           </if>
+           <if test="!empty(token)">
+           AND device_token=#{token}
+           </if>
+     </where>
+      LIMIT 1
+    </select>
+    
 	<!-- 디바이스 갯수 조회 -->
     <select id="selectDeviceCount" parameterType="DeviceDto" resultType="int">
     SELECT count(*) as cnt
@@ -57,9 +77,6 @@
         </if>
         <if test="!empty(memberId)">
         AND member_id=#{memberId}
-        </if>
-        <if test="!empty(token)">
-        AND device_token=#{token}
         </if>
      </where>
       LIMIT 1
