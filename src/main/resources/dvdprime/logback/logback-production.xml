@@ -54,6 +54,19 @@
 		</encoder>
 	</appender>
 
+	<!-- GCM 로그 파일 -->
+	<appender name="gcmfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log4j.logs.path}gcm.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${log4j.logs.path}gcm.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>[%d{HH:mm:ss.SSS}] [%thread] %-5level %logger{32} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
 	<!-- 에러 로그 파일 -->
 	<appender name="errorfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -73,6 +86,11 @@
 	<!-- Restful 접속정보 인터셉터의 접속로그 -->
 	<logger name="com.dvdprime.server.mobile.filter.JerseyAccessLoggingFilter" level="info" additivity="false">
 		<appender-ref ref="accessfile" />
+	</logger>
+	
+	<!-- GCM 발송 로그 -->
+	<logger name="com.dvdprime.server.mobile.worker" level="info" additivity="false">
+		<appender-ref ref="gcmfile" />
 	</logger>
 	
 </included>

@@ -38,10 +38,10 @@ import com.google.android.gcm.server.Sender;
  * @created 2013. 10. 12. 오후 2:45:41
  * @history
  */
-public class AndroidSendWorker implements Callable<NotificationDTO>
+public class SendGCMWorker implements Callable<NotificationDTO>
 {
     /** Logger */
-    private Logger logger = LoggerFactory.getLogger(AndroidSendWorker.class);
+    private Logger logger = LoggerFactory.getLogger(SendGCMWorker.class);
     
     /** 개발자 콘솔에서 발급받은 API Key */
     private final String API_KEY = "AIzaSyBHVjsrUUjmza0ZI--wi0rNiMlfqcKVoXo";
@@ -65,7 +65,7 @@ public class AndroidSendWorker implements Callable<NotificationDTO>
      * @param PushNotificationDTO
      *            전송 데이터
      */
-    public AndroidSendWorker(NotificationDTO data)
+    public SendGCMWorker(NotificationDTO data)
     {
         this.data = data;
     }

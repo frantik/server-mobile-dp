@@ -114,7 +114,7 @@ public class NotificationWorker
                         bo.modifyNotificationOne(dto);
                         
                         // GCM 메시지 전송 워커 탑재
-                        executorService.submit(new AndroidSendWorker(dto));
+                        executorService.submit(new SendGCMWorker(dto));
                     }
                 }
             }
