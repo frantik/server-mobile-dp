@@ -75,6 +75,10 @@ public class ConfigDTO
     // Constructors
     //
     // //////////////////////////////////////////////////////////////////////////////
+    public ConfigDTO()
+    {
+    }
+    
     public ConfigDTO(String memberId)
     {
         this.memberId = memberId;

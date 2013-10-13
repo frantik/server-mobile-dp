@@ -44,20 +44,18 @@ import com.dvdprime.server.mobile.request.DeviceRequest;
  */
 @Path("/device")
 @Produces(MediaType.APPLICATION_JSON)
-public class DeviceResource
-{
+public class DeviceResource {
     /** Logger */
     private final Logger logger = LoggerFactory.getLogger(DeviceResource.class);
-    
+
     @Context
     HttpServletRequest request;
-    
+
     @GET
-    public Response doGet()
-    {
+    public Response doGet() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     /**
      * 디바이스 정보 등록
      * 
@@ -70,37 +68,28 @@ public class DeviceResource
      * @return
      */
     @POST
-    public Response doPost(@FormParam("id")
-    String id, @FormParam("token")
-    String token, @FormParam("version")
-    String version)
-    {
+    public Response doPost(@FormParam("id") String id, 
+            @FormParam("token") String token, 
+            @FormParam("version") String version) {
         DeviceRequest param = new DeviceRequest(id, token, version);
         logger.info("Device POST params: {}", param);
-        
-        try
-        {
-            if (new DeviceBO().creationDeviceOne(param))
-            {
+
+        try {
+            if (new DeviceBO().creationDeviceOne(param)) {
                 return Response.ok(ResponseMessage.SUCCESS).build();
-            }
-            else
-            {
+            } else {
                 return Response.ok(ResponseMessage.FAIL).build();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return Response.ok(ResponseMessage.SERVER_ERROR).build();
         }
     }
-    
+
     @PUT
-    public Response doPut()
-    {
+    public Response doPut() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     /**
      * 디바이스 정보 삭제
      * 
@@ -111,25 +100,17 @@ public class DeviceResource
      * @return
      */
     @DELETE
-    public Response doDelete(@QueryParam("id")
-    String id, @QueryParam("token")
-    String token)
-    {
+    public Response doDelete(@QueryParam("id") String id, 
+            @QueryParam("token") String token) {
         logger.info("Device DELETE params: {}, {}", new Object[] { id, token });
-        
-        try
-        {
-            if (new DeviceBO().removeDeviceOne(new DeviceDTO(id, token)))
-            {
+
+        try {
+            if (new DeviceBO().removeDeviceOne(new DeviceDTO(id, token))) {
                 return Response.ok(ResponseMessage.SUCCESS).build();
-            }
-            else
-            {
+            } else {
                 return Response.ok(ResponseMessage.FAIL).build();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return Response.ok(ResponseMessage.SERVER_ERROR).build();
         }
     }

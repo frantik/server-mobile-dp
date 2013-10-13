@@ -102,6 +102,11 @@ public class NotificationDTO
     private String updatedDecimal;
     
     /**
+     * 확인 안한 알림 갯수
+     */
+    private int unreadCount;
+    
+    /**
      * 디바이스 토큰
      */
     private String token;

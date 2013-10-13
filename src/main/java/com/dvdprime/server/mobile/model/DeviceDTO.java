@@ -76,6 +76,10 @@ public class DeviceDTO
     // Constructors
     //
     // ////////////////////////////////////////////////////////////////////
+    public DeviceDTO()
+    {
+    }
+    
     public DeviceDTO(String id, String token)
     {
         this.memberId = id;

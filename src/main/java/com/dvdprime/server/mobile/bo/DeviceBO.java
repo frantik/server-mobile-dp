@@ -32,11 +32,10 @@ import com.dvdprime.server.mobile.request.DeviceRequest;
  * @created 2013. 10. 8. 오후 11:58:10
  * @history
  */
-public class DeviceBO
-{
+public class DeviceBO {
     /** Logger */
     private Logger logger = LoggerFactory.getLogger(DeviceBO.class);
-    
+
     /**
      * 디바이스 정보 조회
      * 
@@ -46,25 +45,20 @@ public class DeviceBO
      *            디바이스 토큰
      * @return
      */
-    public DeviceDTO searchDeviceOne(String memberId, String token)
-    {
+    public DeviceDTO searchDeviceOne(String memberId, String token) {
         DeviceDTO result = null;
-        
-        if (memberId != null && token != null)
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession())
-            {
+
+        if (memberId != null && token != null) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession()) {
                 result = new DeviceDAO(sqlSession).selectDeviceOne(new DeviceDTO(memberId, token));
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }
-        
+
         return result;
     }
-    
+
     /**
      * 회원 디바이스 정보 추가
      * 
@@ -72,25 +66,24 @@ public class DeviceBO
      *            {@link DeviceRequest}
      * @return
      */
-    public boolean creationDeviceOne(DeviceRequest request)
-    {
+    public boolean creationDeviceOne(DeviceRequest request) {
         boolean result = false;
-        
-        if (request.getId() != null && request.getDeviceToken() != null && request.getVersion() != null)
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
-            {
-                result = new DeviceDAO(sqlSession).insertDeviceOne(new DeviceDTO(request)) > 0;
-            }
-            catch (Exception e)
-            {
+
+        if (request.getId() != null && request.getDeviceToken() != null && request.getVersion() != null) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
+                DeviceDAO dao = new DeviceDAO(sqlSession);
+                DeviceDTO dto = new DeviceDTO(request);
+                if (dao.selectDeviceCount(dto) == 0) {
+                    result = dao.insertDeviceOne(dto) > 0;
+                }
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }
-        
+
         return result;
     }
-    
+
     /**
      * 디바이스 정보 수정
      * 
@@ -98,25 +91,20 @@ public class DeviceBO
      *            {@link DeviceDTO}
      * @return
      */
-    public boolean modifyDeviceOne(DeviceDTO dto)
-    {
+    public boolean modifyDeviceOne(DeviceDTO dto) {
         boolean result = false;
-        
-        if (dto.getMemberId() != null && dto.getToken() != null)
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
-            {
+
+        if (dto.getMemberId() != null && dto.getToken() != null) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
                 result = new DeviceDAO(sqlSession).updateDeviceOne(dto) > 0;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }
-        
+
         return result;
     }
-    
+
     /**
      * 디바이스 정보 삭제
      * 
@@ -124,22 +112,17 @@ public class DeviceBO
      *            {@link DeviceDTO}
      * @return
      */
-    public boolean removeDeviceOne(DeviceDTO dto)
-    {
+    public boolean removeDeviceOne(DeviceDTO dto) {
         boolean result = false;
-        
-        if (dto.getMemberId() != null && dto.getToken() != null)
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
-            {
+
+        if (dto.getMemberId() != null && dto.getToken() != null) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
                 result = new DeviceDAO(sqlSession).deleteDeviceOne(dto) > 0;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }
-        
+
         return result;
     }
 }

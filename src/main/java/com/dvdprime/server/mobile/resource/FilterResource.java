@@ -41,17 +41,15 @@ import com.dvdprime.server.mobile.request.FilterRequest;
  */
 @Path("/filter")
 @Produces(MediaType.APPLICATION_JSON)
-public class FilterResource
-{
+public class FilterResource {
     /** Logger */
     private final Logger logger = LoggerFactory.getLogger(FilterResource.class);
-    
+
     @GET
-    public Response Get()
-    {
+    public Response Get() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     /**
      * 필터 정보 등록
      * 
@@ -64,64 +62,49 @@ public class FilterResource
      * @return
      */
     @POST
-    public Response doPost(@FormParam("id")
-    String id, @FormParam("targetId")
-    String targetId, @FormParam("targetNick")
-    String targetNick)
-    {
+    public Response doPost(@FormParam("id") String id, 
+            @FormParam("targetId") String targetId, 
+            @FormParam("targetNick") String targetNick) {
         FilterRequest params = new FilterRequest(id, targetId, targetNick);
         logger.info("Filter POST params: {}", params);
-        
-        try
-        {
-            if (new FilterBO().creationFilterOne(params))
-            {
+
+        try {
+            if (new FilterBO().creationFilterOne(params)) {
                 return Response.ok(ResponseMessage.SUCCESS).build();
-            }
-            else
-            {
+            } else {
                 return Response.ok(ResponseMessage.FAIL).build();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return Response.ok(ResponseMessage.SERVER_ERROR).build();
         }
     }
-    
+
     @PUT
-    public Response doPut()
-    {
+    public Response doPut() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     /**
      * 필터 정보 삭제
      * 
      * @param id
      *            회원 아이디
+     * @param targetId
+     *            대상 회원 아이디 (콤마)
      * @return
      */
     @DELETE
-    public Response doDelete(@QueryParam("id")
-    String id, @QueryParam("targetId")
-    String targetId)
-    {
+    public Response doDelete(@QueryParam("id") String id, 
+            @QueryParam("targetId") String targetId) {
         logger.info("Filter DELETE params: {}, {}", new Object[] { id, targetId });
-        
-        try
-        {
-            if (new FilterBO().removeFilterOne(id, targetId))
-            {
+
+        try {
+            if (new FilterBO().removeFilterOne(id, targetId)) {
                 return Response.ok(ResponseMessage.SUCCESS).build();
-            }
-            else
-            {
+            } else {
                 return Response.ok(ResponseMessage.FAIL).build();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return Response.ok(ResponseMessage.SERVER_ERROR).build();
         }
     }

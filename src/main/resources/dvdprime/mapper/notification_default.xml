@@ -49,6 +49,7 @@
            A.notification_read_flag,
            FLOOR(DATE_FORMAT(A.creation_time, '%Y%m%d%H%i%s%f')/1000) as creation_time,
            FLOOR(DATE_FORMAT(A.updated_time, '%Y%m%d%H%i%s%f')/1000) as updated_time,
+           (SELECT count(*) FROM notification_tbl WHERE member_id=A.member_id AND notification_read_flag='01') as unread_count,
            B.device_token,
            B.device_version,
            C.config_enabled

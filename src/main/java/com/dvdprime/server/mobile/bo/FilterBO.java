@@ -26,21 +26,21 @@ import com.dvdprime.server.mobile.domain.Filter;
 import com.dvdprime.server.mobile.factory.DaoFactory;
 import com.dvdprime.server.mobile.model.FilterDTO;
 import com.dvdprime.server.mobile.request.FilterRequest;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
 /**
  * 필터 제어 로직
- *
+ * 
  * @author 작은광명
  * @version 1.0
  * @created 2013. 10. 8. 오후 11:58:22
  * @history
  */
-public class FilterBO
-{
+public class FilterBO {
     /** Logger */
     private Logger logger = LoggerFactory.getLogger(FilterBO.class);
-    
+
     /**
      * 필터 목록 조회
      * 
@@ -48,33 +48,26 @@ public class FilterBO
      *            회원 아이디
      * @return
      */
-    public List<Filter> searchFilterList(String id)
-    {
+    public List<Filter> searchFilterList(String id) {
         List<Filter> mResult = null;
-        
-        if (id != null)
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession())
-            {
+
+        if (id != null) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession()) {
                 List<FilterDTO> resultList = new FilterDAO(sqlSession).selectFilterList(new FilterDTO(id));
-                if (resultList != null && !resultList.isEmpty())
-                {
+                if (resultList != null && !resultList.isEmpty()) {
                     mResult = Lists.newArrayList();
-                    for (FilterDTO filter : resultList)
-                    {
+                    for (FilterDTO filter : resultList) {
                         mResult.add(new Filter(filter.getTargetId(), filter.getTargetNick()));
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }
-        
+
         return mResult;
     }
-    
+
     /**
      * 필터 추가
      * 
@@ -82,30 +75,24 @@ public class FilterBO
      *            {@link FilterRequest}
      * @return
      */
-    public boolean creationFilterOne(FilterRequest request)
-    {
+    public boolean creationFilterOne(FilterRequest request) {
         boolean result = false;
-        
-        if (request.getId() != null && request.getTargetId() != null && request.getTargetNick() != null)
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
-            {
+
+        if (request.getId() != null && request.getTargetId() != null && request.getTargetNick() != null) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
                 FilterDAO dao = new FilterDAO(sqlSession);
                 FilterDTO dto = new FilterDTO(request);
-                if (dao.selectFilterCount(dto) == 0)
-                {
+                if (dao.selectFilterCount(dto) == 0) {
                     result = new FilterDAO(sqlSession).insertFilterOne(dto) > 0;
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }
-        
+
         return result;
     }
-    
+
     /**
      * 필터 삭제
      * 
@@ -115,22 +102,24 @@ public class FilterBO
      *            대상 아이디
      * @return
      */
-    public boolean removeFilterOne(String memberId, String targetId)
-    {
+    public boolean removeFilterOne(String memberId, String targetId) {
         boolean result = false;
-        
-        if (memberId != null && targetId != null)
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
-            {
-                result = new FilterDAO(sqlSession).deleteFilterOne(new FilterDTO(memberId, targetId)) > 0;
-            }
-            catch (Exception e)
-            {
+
+        if (memberId != null && targetId != null) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
+                FilterDAO dao = new FilterDAO(sqlSession);
+                if (targetId.contains(",")) {
+                    for (String id : Splitter.on(",").omitEmptyStrings().trimResults().split(targetId)) {
+                        result = dao.deleteFilterOne(new FilterDTO(memberId, id)) > 0;
+                    }
+                } else {
+                    result = dao.deleteFilterOne(new FilterDTO(memberId, targetId)) > 0;
+                }
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }
-        
+
         return result;
     }
 }

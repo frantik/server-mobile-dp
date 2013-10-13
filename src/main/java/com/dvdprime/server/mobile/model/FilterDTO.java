@@ -76,6 +76,9 @@ public class FilterDTO
     // Constructors
     //
     // //////////////////////////////////////////////////////////////////////////////////
+    public FilterDTO() {
+    }
+    
     public FilterDTO(String memberId)
     {
         this.memberId = memberId;

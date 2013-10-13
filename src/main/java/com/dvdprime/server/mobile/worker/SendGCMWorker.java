@@ -23,8 +23,10 @@ import org.slf4j.LoggerFactory;
 import com.dvdprime.server.mobile.bo.DeviceBO;
 import com.dvdprime.server.mobile.bo.NotificationBO;
 import com.dvdprime.server.mobile.constants.Const;
+import com.dvdprime.server.mobile.domain.Gcm;
 import com.dvdprime.server.mobile.model.DeviceDTO;
 import com.dvdprime.server.mobile.model.NotificationDTO;
+import com.dvdprime.server.mobile.util.GsonUtil;
 import com.google.android.gcm.server.Constants;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
@@ -77,7 +79,7 @@ public class SendGCMWorker implements Callable<NotificationDTO>
         
         try
         {
-            Message message = new Message.Builder().collapseKey("collapseKey" + System.currentTimeMillis()).timeToLive(TIME_TO_LIVE).delayWhileIdle(DELAY_WHILE_IDLE).addData("msg", data.getMessage()).build();
+            Message message = new Message.Builder().collapseKey("collapseKey" + System.currentTimeMillis()).timeToLive(TIME_TO_LIVE).delayWhileIdle(DELAY_WHILE_IDLE).addData("msg", GsonUtil.toJson(new Gcm(data))).build();
             
             logger.debug("Android Push Device Token : {}", data.getToken());
             logger.info("GCM send data: {}", message);

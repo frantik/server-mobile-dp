@@ -29,6 +29,7 @@
         <result property="readFlag" column="notification_read_flag" />
         <result property="creationTime" column="creation_time" javaType="long" />
         <result property="updatedTime" column="updated_time" javaType="long" />
+        <result property="unreadCount" column="unread_count" javaType="int" />
         <result property="token" column="device_token" />
         <result property="version" column="device_version" />
         <result property="enabled" column="config_enabled" />

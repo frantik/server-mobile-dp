@@ -17,18 +17,25 @@ package com.dvdprime.server.mobile.worker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dvdprime.server.mobile.bo.DeviceBO;
 import com.dvdprime.server.mobile.bo.NotificationBO;
 import com.dvdprime.server.mobile.constants.Const;
+import com.dvdprime.server.mobile.domain.Gcm;
+import com.dvdprime.server.mobile.model.DeviceDTO;
 import com.dvdprime.server.mobile.model.NotificationDTO;
+import com.dvdprime.server.mobile.util.DateUtil;
+import com.dvdprime.server.mobile.util.GsonUtil;
 import com.dvdprime.server.mobile.util.StringUtil;
+import com.google.android.gcm.server.Constants;
+import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.Result;
+import com.google.android.gcm.server.Sender;
 import com.google.common.base.Stopwatch;
 
 /**
@@ -44,8 +51,19 @@ public class NotificationWorker
     /** Logger */
     private Logger logger = LoggerFactory.getLogger(NotificationWorker.class);
     
-    /** Thread 실행 서비스 */
-    private ExecutorService executorService = null;
+    /** 개발자 콘솔에서 발급받은 API Key */
+    private final String API_KEY = "AIzaSyBHVjsrUUjmza0ZI--wi0rNiMlfqcKVoXo";
+    
+    /** Should be represented as 1 or true for true, anything else for false. Optional. The default value is false. **/
+    private final boolean DELAY_WHILE_IDLE = true;
+    
+    /**
+     * How long (in seconds) the message should be kept on GCM storage if the device is offline. Optional (default time-to-live is 4 weeks, and must be set as a JSON number). 30 min.
+     **/
+    private final int TIME_TO_LIVE = 1800;
+    
+    // 메세지 전송 실패시 재시도할 횟수
+    private final int RETRY = 3;
     
     private List<ScheduledThreadPoolExecutor> execList = new ArrayList<ScheduledThreadPoolExecutor>();
     
@@ -89,10 +107,11 @@ public class NotificationWorker
                 {
                     
                     logger.info("{}개의 푸시 메시지를 가져왔습니다. ({}ms)", resultList.size(), stopWatch.elapsed(TimeUnit.MILLISECONDS));
-                    if (executorService == null) executorService = Executors.newFixedThreadPool(3);
                     
                     for (NotificationDTO dto : resultList)
                     {
+                        // 현재 시간을 세팅
+                        dto.setUpdatedDecimal(DateUtil.getCurrentTimeDecimal());
                         // 기본적인 디바이스 토큰이 없을 경우 전송하지 않는다.
                         if (StringUtil.isBlank(dto.getToken()))
                         {
@@ -114,8 +133,49 @@ public class NotificationWorker
                         dto.setStatus(Const.STATUS_SENDING);
                         bo.modifyNotificationOne(dto);
                         
-                        // GCM 메시지 전송 워커 탑재
-                        executorService.submit(new SendGCMWorker(dto));
+                        try
+                        {
+                            Message message = new Message.Builder().collapseKey("collapseKey" + System.currentTimeMillis()).timeToLive(TIME_TO_LIVE).delayWhileIdle(DELAY_WHILE_IDLE).addData("action", "comment").addData("msg", GsonUtil.toJson(new Gcm(dto))).build();
+                            
+                            logger.debug("Android Push Device Token : {}", dto.getToken());
+                            logger.info("GCM send data: {}", message);
+                            // 단일전송시에 사용
+                            Result result = new Sender(API_KEY).send(message, dto.getToken(), RETRY);
+                            
+                            if (result.getMessageId() != null)
+                            {
+                                dto.setStatus(Const.STATUS_COMPLETED);
+                                logger.debug("Android Push canonicalRegId : {}", result.getCanonicalRegistrationId());
+                                if (result.getCanonicalRegistrationId() != null)
+                                {
+                                    // devices.get(i) has more than on registration ID: update database
+                                    DeviceBO deviceBO = new DeviceBO();
+                                    DeviceDTO device = deviceBO.searchDeviceOne(dto.getMemberId(), dto.getToken());
+                                    dto.setToken(result.getCanonicalRegistrationId());
+                                    deviceBO.modifyDeviceOne(device);
+                                }
+                            }
+                            else
+                            {
+                                logger.info("Android Push Error Result : [{}]{}", dto.getSeq(), result.getErrorCodeName());
+                                if (Constants.ERROR_NOT_REGISTERED.equals(result.getErrorCodeName()))
+                                {
+                                    dto.setStatus(Const.STATUS_ERROR);
+                                    // DB에서 디바이스 정보 삭제
+                                    new DeviceBO().removeDeviceOne(new DeviceDTO(dto.getMemberId(), dto.getToken()));
+                                }
+                                else
+                                {
+                                    dto.setStatus(Const.STATUS_ERROR);
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            dto.setStatus(Const.STATUS_ERROR);
+                            logger.error("안드로이드 푸시 메시지 전송 중 에러가 발생했습니다.", e);
+                        }
+                        bo.modifyNotificationOne(dto);
                     }
                 }
             }
@@ -125,21 +185,7 @@ public class NotificationWorker
             }
             finally
             {
-                if (executorService != null)
-                {
-                    // This will make the executor accept no new threads
-                    // and finish all existing threads in the queue
-                    executorService.shutdown();
-                    // Wait until all threads are finish
-                    while (!executorService.isTerminated())
-                    {
-                    }
-                    logger.info("푸시 메시지 발송 작업 소요 시간 -> {}ms", stopWatch.elapsed(TimeUnit.MILLISECONDS));
-                }
-                else
-                {
-                    logger.info("발송 메시지가 없습니다. 작업 소요 시간 -> {}ms", stopWatch.elapsed(TimeUnit.MILLISECONDS));
-                }
+                logger.info("푸시 메시지 발송 작업 소요 시간 -> {}ms", stopWatch.elapsed(TimeUnit.MILLISECONDS));
             }
         }
     }
