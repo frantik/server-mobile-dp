@@ -23,56 +23,55 @@ package com.dvdprime.server.mobile.constants;
  * @created 2013. 10. 7. 오후 3:04:20
  * @history
  */
-public class Const
-{
+public class Const {
     /**
      * 활성화
      */
     public static final String ENABLED_ON = "01";
-    
+
     /**
      * 비활성화
      */
     public static final String ENABLED_OFF = "02";
-    
+
     /**
      * 알림 종류 - 댓글
      */
     public static final String TYPE_CMT = "01";
-    
+
     /**
      * 알림 종류 - 쪽지
      */
     public static final String TYPE_MEMO = "02";
-    
+
     /**
      * 알림 발송 상태 - 대기
      */
     public static final String STATUS_READY = "10";
-    
+
     /**
      * 알림 발송 상태 - 발송중
      */
     public static final String STATUS_SENDING = "20";
-    
+
     /**
      * 알림 발송 상태 - 발송완료
      */
     public static final String STATUS_COMPLETED = "90";
-    
+
     /**
      * 알림 발송 상태 - 발송실패
      */
     public static final String STATUS_ERROR = "EE";
-    
+
     /**
      * 읽지 않음
      */
     public static final String READ_FLAG_01 = "01";
-    
+
     /**
      * 읽음
      */
     public static final String READ_FLAG_02 = "02";
-    
+
 }

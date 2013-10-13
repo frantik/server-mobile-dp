@@ -32,16 +32,14 @@ import com.dvdprime.server.mobile.model.ConfigDTO;
  * @history
  */
 @Data
-public class ConfigDAO
-{
-    
+public class ConfigDAO {
+
     private SqlSession sqlSession;
-    
-    public ConfigDAO(SqlSession sqlSession)
-    {
+
+    public ConfigDAO(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
-    
+
     /**
      * 설정 목록 조회
      * 
@@ -49,11 +47,10 @@ public class ConfigDAO
      *            {@link ConfigDTO}
      * @return
      */
-    public List<ConfigDTO> selectConfigList(ConfigDTO dto) throws Exception
-    {
+    public List<ConfigDTO> selectConfigList(ConfigDTO dto) throws Exception {
         return sqlSession.selectList("Config.selectConfigList", dto);
     }
-    
+
     /**
      * 설정 갯수 조회
      * 
@@ -62,11 +59,10 @@ public class ConfigDAO
      * @return
      * @throws Exception
      */
-    public int selectConfigCount(ConfigDTO dto) throws Exception
-    {
+    public int selectConfigCount(ConfigDTO dto) throws Exception {
         return (int) sqlSession.selectOne("Config.selectConfigCount", dto);
     }
-    
+
     /**
      * 설정 정보 추가
      * 
@@ -74,11 +70,10 @@ public class ConfigDAO
      *            {@link ConfigDTO}
      * @return
      */
-    public int insertConfigOne(ConfigDTO dto) throws Exception
-    {
+    public int insertConfigOne(ConfigDTO dto) throws Exception {
         return sqlSession.insert("Config.insertConfigOne", dto);
     }
-    
+
     /**
      * 설정 정보 업데이트
      * 
@@ -87,9 +82,8 @@ public class ConfigDAO
      * @return
      * @throws Exception
      */
-    public int updateConfigOne(ConfigDTO dto) throws Exception
-    {
+    public int updateConfigOne(ConfigDTO dto) throws Exception {
         return sqlSession.update("Config.updateConfigOne", dto);
     }
-    
+
 }

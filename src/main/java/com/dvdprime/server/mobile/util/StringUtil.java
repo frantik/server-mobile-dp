@@ -28,12 +28,11 @@ import java.util.StringTokenizer;
  * @created 2013. 10. 7. 오후 3:13:15
  * @history
  */
-public class StringUtil
-{
+public class StringUtil {
     public static final String EMPTY = "";
-    
+
     private static final int INDEX_NOT_FOUND = -1;
-    
+
     /**
      * <p>
      * 문자열(String)에 검색문자열(String)이 포함되어 있는지 검사한다.
@@ -54,12 +53,13 @@ public class StringUtil
      *            검색문자열
      * @return 문자열(String)에 검색 문자열이 포함되어 있을때 <code>true</code>, 문자열(String)에 검색 문자열이 포함되어 있지 않을때나, 문자열 또는 검색문자열이 <code>null</code>일때 <code>false</code>
      */
-    public static boolean contains(String str, String searchStr)
-    {
-        if (str == null || searchStr == null) { return false; }
+    public static boolean contains(String str, String searchStr) {
+        if (str == null || searchStr == null) {
+            return false;
+        }
         return str.indexOf(searchStr) > INDEX_NOT_FOUND;
     }
-    
+
     /**
      * <p>
      * 문자열(String) List에 검색문자열(String)이 포함되어 있는지 검사한다.
@@ -76,30 +76,34 @@ public class StringUtil
      *            검색할 문자열 목록
      * @return
      */
-    public static boolean contains(String str, String[] keywords)
-    {
-        if (str == null || keywords == null) { return false; }
-        
-        for (String key : keywords)
-        {
-            if (contains(str, key)) { return true; }
+    public static boolean contains(String str, String[] keywords) {
+        if (str == null || keywords == null) {
+            return false;
         }
-        
+
+        for (String key : keywords) {
+            if (contains(str, key)) {
+                return true;
+            }
+        }
+
         return false;
     }
-    
-    public static boolean contains(String str, List<String> keywords)
-    {
-        if (str == null || keywords == null) { return false; }
-        
-        for (String key : keywords)
-        {
-            if (contains(str, key)) { return true; }
+
+    public static boolean contains(String str, List<String> keywords) {
+        if (str == null || keywords == null) {
+            return false;
         }
-        
+
+        for (String key : keywords) {
+            if (contains(str, key)) {
+                return true;
+            }
+        }
+
         return false;
     }
-    
+
     /**
      * <p>
      * 문자열 배열(String Array)에 검색문자열(String)이 포함되어 있는지 검사한다.
@@ -120,20 +124,22 @@ public class StringUtil
      *            검색문자열
      * @return 문자열 배열(String Array)에 검색 문자열과 같은 문자열이 포함되어 있을때 <code>true</code>, 문자열(String)에 검색 문자열이 포함되어 있지 않을때나, 문자열 또는 검색문자열이 <code>null</code>일때 <code>false</code>
      */
-    public static boolean contains(String[] arr, String searchStr)
-    {
-        if (arr == null || searchStr == null) { return false; }
-        
+    public static boolean contains(String[] arr, String searchStr) {
+        if (arr == null || searchStr == null) {
+            return false;
+        }
+
         for (String str : arr)
-            if (equals(str, searchStr)) return true;
-        
+            if (equals(str, searchStr))
+                return true;
+
         return false;
     }
-    
+
     // ----------------------------------------------------------------------
     // 공백/여백문자 검사, 제거, 치환
     // ----------------------------------------------------------------------
-    
+
     /**
      * <p>
      * 문자열(String)의 좌우 여백문자(white space)를 제거한후, 공백("")이거나 <code>null</code>인 검사한다.
@@ -151,20 +157,21 @@ public class StringUtil
      *            문자열
      * @return
      */
-    public static boolean isBlank(String str)
-    {
-        if (str == null) { return true; }
+    public static boolean isBlank(String str) {
+        if (str == null) {
+            return true;
+        }
         int strLen = str.length();
-        if (strLen > 0)
-        {
-            for (int i = 0; i < strLen; i++)
-            {
-                if (Character.isWhitespace(str.charAt(i)) == false) { return false; }
+        if (strLen > 0) {
+            for (int i = 0; i < strLen; i++) {
+                if (Character.isWhitespace(str.charAt(i)) == false) {
+                    return false;
+                }
             }
         }
         return true;
     }
-    
+
     /**
      * <p>
      * 문자열(String)의 좌우 여백문자(white space)를 제거한후, 공백("")이 아니거나 <code>null</code>이 아닌지 검사한다.
@@ -182,11 +189,10 @@ public class StringUtil
      *            문자열
      * @return
      */
-    public static boolean isNotBlank(String str)
-    {
+    public static boolean isNotBlank(String str) {
         return !isBlank(str);
     }
-    
+
     /**
      * <p>
      * 문자열(String)이 공백("")이거나 <code>null</code>인 검사한다.
@@ -205,11 +211,10 @@ public class StringUtil
      *            검사할 문자열
      * @return
      */
-    public static boolean isEmpty(String str)
-    {
+    public static boolean isEmpty(String str) {
         return str == null || str.length() == 0;
     }
-    
+
     /**
      * <p>
      * 문자열(String)이 공백("")이 아니거나 <code>null</code>이 아닌지 검사한다.
@@ -227,11 +232,10 @@ public class StringUtil
      *            검사할 문자열
      * @return
      */
-    public static boolean isNotEmpty(String str)
-    {
+    public static boolean isNotEmpty(String str) {
         return !isEmpty(str);
     }
-    
+
     /**
      * <p>
      * 문자열이 숫자로만 구성되어 있는지 검사한다.
@@ -248,20 +252,16 @@ public class StringUtil
      *            검사할 문자열
      * @return
      */
-    public static boolean isNumber(String str)
-    {
-        try
-        {
+    public static boolean isNumber(String str) {
+        try {
             Integer.valueOf(str);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return false;
         }
-        
+
         return true;
     }
-    
+
     // ----------------------------------------------------------------------
     // 문자열 비교
     // ----------------------------------------------------------------------
@@ -287,11 +287,10 @@ public class StringUtil
      *            두번째 문자열
      * @return 문자열(String)이 일치하면 <code>true</code>
      */
-    public static boolean equals(String str1, String str2)
-    {
+    public static boolean equals(String str1, String str2) {
         return str1 == null ? str2 == null : str1.equals(str2);
     }
-    
+
     /**
      * <p>
      * 대소문자를 무시한, 두 문자열(String)이 일치하면 <code>true</code>을 반환한다.
@@ -314,11 +313,10 @@ public class StringUtil
      *            두번째 문자열
      * @return 대소문자를 무시한 문자열(String)이 일치하면 <code>true</code>
      */
-    public static boolean equalsIgnoreCase(String str1, String str2)
-    {
+    public static boolean equalsIgnoreCase(String str1, String str2) {
         return str1 == null ? str2 == null : str1.equalsIgnoreCase(str2);
     }
-    
+
     /**
      * <p>
      * 문자열을 구분자로 나누어서, 문자열 배열로 만든다.
@@ -339,26 +337,26 @@ public class StringUtil
      *            구분자
      * @return 구분자로 나누어진 문자열 배열
      */
-    public static String[] split(String str, String separator)
-    {
-        if (str == null) { return null; }
+    public static String[] split(String str, String separator) {
+        if (str == null) {
+            return null;
+        }
         String[] result;
         int i = 0; // index into the next empty array element
-        
+
         // --- Declare and create a StringTokenizer
         StringTokenizer st = new StringTokenizer(str, separator);
         // --- Create an array which will hold all the tokens.
         result = new String[st.countTokens()];
-        
+
         // --- Loop, getting each of the tokens
-        while (st.hasMoreTokens())
-        {
+        while (st.hasMoreTokens()) {
             result[i++] = st.nextToken();
         }
-        
+
         return result;
     }
-    
+
     /**
      * <p>
      * 시작 인덱스부터 문자열을 자는다.
@@ -380,17 +378,22 @@ public class StringUtil
      *            시작 인덱스(0부터 시작)
      * @return
      */
-    public static String substring(String str, int beginIndex)
-    {
-        if (str == null) { return null; }
-        
-        if (beginIndex < 0) { return EMPTY; }
-        
-        if (beginIndex > str.length()) { return EMPTY; }
-        
+    public static String substring(String str, int beginIndex) {
+        if (str == null) {
+            return null;
+        }
+
+        if (beginIndex < 0) {
+            return EMPTY;
+        }
+
+        if (beginIndex > str.length()) {
+            return EMPTY;
+        }
+
         return str.substring(beginIndex);
     }
-    
+
     /**
      * <p>
      * 시작 인덱스부터 끝 인덱스까지 문자열을 자는다.
@@ -414,22 +417,26 @@ public class StringUtil
      * @param endIndex
      * @return
      */
-    public static String substring(String str, int beginIndex, int endIndex)
-    {
-        if (str == null) { return null; }
-        
-        if (beginIndex < 0 || endIndex < 0) { return EMPTY; }
-        
-        if (endIndex > str.length())
-        {
+    public static String substring(String str, int beginIndex, int endIndex) {
+        if (str == null) {
+            return null;
+        }
+
+        if (beginIndex < 0 || endIndex < 0) {
+            return EMPTY;
+        }
+
+        if (endIndex > str.length()) {
             endIndex = str.length();
         }
-        
-        if (beginIndex > endIndex || beginIndex > str.length()) { return EMPTY; }
-        
+
+        if (beginIndex > endIndex || beginIndex > str.length()) {
+            return EMPTY;
+        }
+
         return str.substring(beginIndex, endIndex);
     }
-    
+
     /**
      * URL에서 해당 파라미터를 제외하고 반환한다.
      * 
@@ -437,33 +444,29 @@ public class StringUtil
      * @param excepts
      * @return
      */
-    public static String removeParameter(String url, List<String> excepts)
-    {
-        if (url == null) { return null; }
+    public static String removeParameter(String url, List<String> excepts) {
+        if (url == null) {
+            return null;
+        }
         StringBuffer sb = new StringBuffer();
-        
-        try
-        {
+
+        try {
             URL mUrl = new URL(url);
             sb.append(mUrl.getProtocol()).append("://").append(mUrl.getHost()).append(mUrl.getPath()).append("?");
             String[] params = split(mUrl.getQuery(), "&");
-            for (String p : params)
-            {
+            for (String p : params) {
                 String[] arr = split(p, "=");
-                if (!excepts.contains(arr[0]))
-                {
+                if (!excepts.contains(arr[0])) {
                     sb.append("&").append(p);
                 }
             }
-        }
-        catch (MalformedURLException e)
-        {
+        } catch (MalformedURLException e) {
             return null;
         }
-        
+
         return sb.toString();
     }
-    
+
     /**
      * URL의 파라미터의 값을 반환
      * 
@@ -473,28 +476,25 @@ public class StringUtil
      *            파라미터명
      * @return
      */
-    public static String getParamValue(String url, String param)
-    {
-        if ((url == null) || (param == null)) return null;
-        
+    public static String getParamValue(String url, String param) {
+        if ((url == null) || (param == null))
+            return null;
+
         StringBuffer sb = new StringBuffer();
-        try
-        {
+        try {
             String[] arrStr = split(new URL(url).getQuery(), "&");
-            for (String str : arrStr)
-            {
-                String[] compare = split(str, "=");
-                if (equals(param, compare[0]))
-                {
-                    sb.append(compare[1]);
-                    break;
+            if (arrStr != null && arrStr.length > 0) {
+                for (String str : arrStr) {
+                    String[] compare = split(str, "=");
+                    if (equals(param, compare[0])) {
+                        sb.append(compare[1]);
+                        break;
+                    }
                 }
             }
+        } catch (MalformedURLException e) {
         }
-        catch (MalformedURLException e)
-        {
-        }
-        
+
         return sb.toString();
     }
 }

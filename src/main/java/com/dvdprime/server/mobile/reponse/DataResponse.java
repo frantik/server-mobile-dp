@@ -28,28 +28,24 @@ import org.codehaus.jackson.annotate.JsonPropertyOrder;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JsonPropertyOrder({ "status", "message", "data" })
-public class DataResponse extends AbstractEntity
-{
+public class DataResponse extends AbstractEntity {
     /**
      * generated serial version ID
      */
     private static final long serialVersionUID = 2460697475380113544L;
-    
+
     /** 목록 */
     private Object data;
-    
+
     // ////////////////////////////////////////////////////////////////////////////////////
     //
     // Constructors
     //
     // ////////////////////////////////////////////////////////////////////////////////////
-    public DataResponse()
-    {
-    }
-    
-    public DataResponse(Object data)
-    {
+    public DataResponse() {}
+
+    public DataResponse(Object data) {
         this.data = data;
     }
-    
+
 }

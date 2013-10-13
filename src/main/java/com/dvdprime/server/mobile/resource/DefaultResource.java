@@ -22,11 +22,9 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/default")
 @Produces(MediaType.APPLICATION_JSON)
-public class DefaultResource
-{
+public class DefaultResource {
     @GET
-    public String Get()
-    {
+    public String Get() {
         return "Hello, DvdPrime Mobile Server by frantik";
     }
 }

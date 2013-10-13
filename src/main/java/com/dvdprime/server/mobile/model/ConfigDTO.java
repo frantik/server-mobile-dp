@@ -28,64 +28,59 @@ import com.dvdprime.server.mobile.util.DateUtil;
  * @history
  */
 @Data
-public class ConfigDTO
-{
+public class ConfigDTO {
     /**
      * 설정 고유번호
      */
     private int seq;
-    
+
     /**
      * 회원 아이디
      */
     private String memberId;
-    
+
     /**
      * 설정 종류
      */
     private String type;
-    
+
     /**
      * 설정 활성화 여부 (01: 활성화, 02: 비활성화)
      */
     private String enabled;
-    
+
     /**
      * 등록시간 (timestamp)
      */
     private long creationTime;
-    
+
     /**
      * 등록시간 (decimal)
      */
     private String creationDecimal;
-    
+
     /**
      * 수정시간 (timestamp)
      */
     private long updatedTime;
-    
+
     /**
      * 수정시간 (decimal)
      */
     private String updatedDecimal;
-    
+
     // //////////////////////////////////////////////////////////////////////////////
     //
     // Constructors
     //
     // //////////////////////////////////////////////////////////////////////////////
-    public ConfigDTO()
-    {
-    }
-    
-    public ConfigDTO(String memberId)
-    {
+    public ConfigDTO() {}
+
+    public ConfigDTO(String memberId) {
         this.memberId = memberId;
     }
-    
-    public ConfigDTO(String memberId, String type, boolean enabled)
-    {
+
+    public ConfigDTO(String memberId, String type, boolean enabled) {
         this.memberId = memberId;
         this.type = type;
         this.enabled = enabled ? "01" : "02";

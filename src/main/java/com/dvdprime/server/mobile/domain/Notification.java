@@ -29,37 +29,33 @@ import com.dvdprime.server.mobile.util.DateUtil;
  * @history
  */
 @Data
-public class Notification
-{
+public class Notification {
     /** 글 제목 */
     private String title;
-    
+
     /** 메시지 */
     private String message;
-    
+
     /** 링크 URL */
     private String targetUrl;
-    
+
     /** 해당 오브젝트 고유번호 */
     private String targetKey;
-    
+
     /** 확인 여부 */
     private boolean readFlag;
-    
+
     /** 등록 시간 */
     private long creationTime;
-    
+
     // //////////////////////////////////////////////////////////////
     //
     // Constructors
     //
     // //////////////////////////////////////////////////////////////
-    public Notification()
-    {
-    }
-    
-    public Notification(NotificationDTO dto)
-    {
+    public Notification() {}
+
+    public Notification(NotificationDTO dto) {
         this.title = dto.getTitle();
         this.message = dto.getMessage();
         this.targetUrl = dto.getTargetUrl();

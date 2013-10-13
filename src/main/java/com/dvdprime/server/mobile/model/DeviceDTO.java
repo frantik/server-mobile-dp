@@ -29,65 +29,60 @@ import com.dvdprime.server.mobile.util.DateUtil;
  * @history
  */
 @Data
-public class DeviceDTO
-{
+public class DeviceDTO {
     /**
      * 디바이스 고유번호
      */
     private int seq;
-    
+
     /**
      * 회원 아이디
      */
     private String memberId;
-    
+
     /**
      * 디바이스 토큰
      */
     private String token;
-    
+
     /**
      * 디바이스 버전
      */
     private String version;
-    
+
     /**
      * 등록시간 (timestamp)
      */
     private long creationTime;
-    
+
     /**
      * 등록시간 (decimal)
      */
     private String creationDecimal;
-    
+
     /**
      * 수정시간 (timestamp)
      */
     private long updatedTime;
-    
+
     /**
      * 수정시간 (decimal)
      */
     private String updatedDecimal;
-    
+
     // ////////////////////////////////////////////////////////////////////
     //
     // Constructors
     //
     // ////////////////////////////////////////////////////////////////////
-    public DeviceDTO()
-    {
-    }
-    
-    public DeviceDTO(String id, String token)
-    {
+    public DeviceDTO() {}
+
+    public DeviceDTO(String id, String token) {
         this.memberId = id;
         this.token = token;
     }
-    
-    public DeviceDTO(DeviceRequest req)
-    {
+
+    public DeviceDTO(DeviceRequest req) {
         this.memberId = req.getId();
         this.token = req.getDeviceToken();
         this.version = req.getVersion();

@@ -21,11 +21,10 @@ package com.dvdprime.server.mobile.constants;
  * @author 작은광명
  * @history
  */
-public class HttpStatus
-{
-    
+public class HttpStatus {
+
     /* 2xx Success */
-    
+
     /**
      * 200 OK
      * 
@@ -37,7 +36,7 @@ public class HttpStatus
      * </pre>
      */
     public static final int OK = 200;
-    
+
     /**
      * 201 Created
      * 
@@ -46,9 +45,9 @@ public class HttpStatus
      * </pre>
      */
     public static final int CREATED = 201;
-    
+
     /* 3xx Redirection */
-    
+
     /**
      * 304 Not Modified
      * 
@@ -61,9 +60,9 @@ public class HttpStatus
      * </pre>
      */
     public static final int NOT_MODIFIED = 304;
-    
+
     /* 4xx Client Error */
-    
+
     /**
      * 400 Bad Request
      * 
@@ -72,7 +71,7 @@ public class HttpStatus
      * </pre>
      */
     public static final int BAD_REQUEST = 400;
-    
+
     /**
      * 401 Unauthorized
      * 
@@ -82,7 +81,7 @@ public class HttpStatus
      * </pre>
      */
     public static final int UNAUTHORIZED = 401;
-    
+
     /**
      * 403 Forbidden
      * 
@@ -96,7 +95,7 @@ public class HttpStatus
      * </pre>
      */
     public static final int FORBIDDEN = 403;
-    
+
     /**
      * 404 Not Found
      * 
@@ -106,9 +105,9 @@ public class HttpStatus
      * </pre>
      */
     public static final int NOT_FOUND = 404;
-    
+
     /* 5xx Server Error */
-    
+
     /**
      * 500 Internal Server Error
      * 
@@ -117,7 +116,7 @@ public class HttpStatus
      * </pre>
      */
     public static final int INTERNAL_SERVER_ERROR = 500;
-    
+
     /**
      * 503 Service Unavailable
      * 

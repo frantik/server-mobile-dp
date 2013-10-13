@@ -40,13 +40,12 @@ import com.google.common.collect.Lists;
  * @created 2013. 10. 8. 오후 11:58:35
  * @history
  */
-public class NotificationBO
-{
+public class NotificationBO {
     /**
      * Logger
      */
     private Logger logger = LoggerFactory.getLogger(NotificationBO.class);
-    
+
     /**
      * 알림 목록 조회
      * 
@@ -54,23 +53,18 @@ public class NotificationBO
      *            {@link NotificationRequest}
      * @return
      */
-    public List<Notification> searchNotificationList(NotificationRequest request)
-    {
+    public List<Notification> searchNotificationList(NotificationRequest request) {
         List<Notification> mResult = null;
-        
-        if (request.getId() != null)
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
-            {
+
+        if (request.getId() != null) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
                 NotificationDTO dto = new NotificationDTO(request);
                 NotificationDAO dao = new NotificationDAO(sqlSession);
                 List<NotificationDTO> resultList = dao.selectNotificationList(dto);
-                if (resultList != null && !resultList.isEmpty())
-                {
+                if (resultList != null && !resultList.isEmpty()) {
                     mResult = Lists.newArrayList();
                     String updatedDecimal = DateUtil.getCurrentTimeDecimal();
-                    for (NotificationDTO notification : resultList)
-                    {
+                    for (NotificationDTO notification : resultList) {
                         mResult.add(new Notification(notification));
                         // 조회한 내용은 모두 읽음으로 변경한다.
                         notification.setReadFlag(Const.READ_FLAG_02);
@@ -78,37 +72,31 @@ public class NotificationBO
                         dao.updateNotificationOne(notification);
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }
-        
+
         return mResult;
     }
-    
+
     /**
      * 알림 전송할 목록 조회
      * 
      * @return
      */
-    public List<NotificationDTO> searchNotificationSendList()
-    {
+    public List<NotificationDTO> searchNotificationSendList() {
         List<NotificationDTO> mResult = null;
-        
-        try (SqlSession sqlSession = DaoFactory.getInstance().openSession())
-        {
+
+        try (SqlSession sqlSession = DaoFactory.getInstance().openSession()) {
             mResult = new NotificationDAO(sqlSession).selectNotificationSendList();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
         }
-        
+
         return mResult;
     }
-    
+
     /**
      * 확인 안한 알림갯수 조회
      * 
@@ -116,29 +104,24 @@ public class NotificationBO
      *            회원 아이디
      * @return
      */
-    public int searchNotificationCount(String memberId)
-    {
+    public int searchNotificationCount(String memberId) {
         int result = 0;
-        
-        if (memberId != null)
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession())
-            {
+
+        if (memberId != null) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession()) {
                 NotificationDTO dto = new NotificationDTO();
                 dto.setMemberId(memberId);
                 ;
                 dto.setReadFlag(Const.READ_FLAG_01);
                 result = new NotificationDAO(sqlSession).selectNotificationCount(dto);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }
-        
+
         return result;
     }
-    
+
     /**
      * 알림 정보 등록
      * 
@@ -146,66 +129,48 @@ public class NotificationBO
      *            {@link NotificationRequest}
      * @return
      */
-    public boolean creationNotificationOne(NotificationRequest request)
-    {
+    public boolean creationNotificationOne(NotificationRequest request) {
         boolean result = false;
-        
-        if (request.getIds() != null && request.getMessage() != null && request.getTargetUrl() != null)
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
-            {
+
+        if (request.getIds() != null && request.getMessage() != null && request.getTargetUrl() != null) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
                 NotificationDAO dao = new NotificationDAO(sqlSession);
-                for (String id : Splitter.on(",").omitEmptyStrings().trimResults().split(request.getIds()))
-                {
+                for (String id : Splitter.on(",").omitEmptyStrings().trimResults().split(request.getIds())) {
                     NotificationDTO dto = new NotificationDTO(id, request);
                     // 댓글 알림일 경우
-                    if (StringUtil.equals(request.getType(), Const.TYPE_CMT))
-                    {
-                        String dups = new StringBuffer().append(StringUtil.getParamValue(request.getTargetUrl(), "major")).append(StringUtil.getParamValue(request.getTargetUrl(), "minor"))
-                                .append(StringUtil.getParamValue(request.getTargetUrl(), "master_id")).append(StringUtil.getParamValue(request.getTargetUrl(), "bbslist_id")).toString();
+                    if (StringUtil.equals(request.getType(), Const.TYPE_CMT)) {
+                        String dups = new StringBuffer().append(StringUtil.getParamValue(request.getTargetUrl(), "major")).append(StringUtil.getParamValue(request.getTargetUrl(), "minor")).append(StringUtil.getParamValue(request.getTargetUrl(), "master_id")).append(StringUtil.getParamValue(request.getTargetUrl(), "bbslist_id")).toString();
                         dto.setDups(dups);
-                        if (dao.selectNotificationCount(dto) > 0)
-                        {
+                        if (dao.selectNotificationCount(dto) > 0) {
                             dto.setReadFlag(Const.READ_FLAG_01);
                             dto.setStatus(Const.STATUS_READY);
                             dao.updateNotificationOne(dto);
-                        }
-                        else
-                        {
+                        } else {
                             dao.insertNotificationOne(dto);
                         }
-                    }
-                    else if (StringUtil.equals(request.getType(), Const.TYPE_MEMO))
-                    {
+                    } else if (StringUtil.equals(request.getType(), Const.TYPE_MEMO)) {
                         result = dao.insertNotificationOne(new NotificationDTO(id, request)) > 0;
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }
-        
+
         return result;
     }
-    
+
     /**
      * 알림 메시지 정보 수정
      * 
      * @param dto
      *            {@link NotificationDTO}
      */
-    public void modifyNotificationOne(NotificationDTO dto)
-    {
-        if (dto.getSeq() > 0)
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
-            {
+    public void modifyNotificationOne(NotificationDTO dto) {
+        if (dto.getSeq() > 0) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
                 new NotificationDAO(sqlSession).updateNotificationOne(dto);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }

@@ -31,10 +31,9 @@ import com.google.gson.JsonParser;
  * @author 작은광명
  * </pre>
  */
-public class GsonUtil
-{
+public class GsonUtil {
     private static final Gson gson = new Gson();
-    
+
     /**
      * JSON String 으로 변환
      * 
@@ -42,13 +41,14 @@ public class GsonUtil
      *            Object
      * @return
      */
-    public static String toJson(Object src)
-    {
-        if (src == null) { return null; }
-        
+    public static String toJson(Object src) {
+        if (src == null) {
+            return null;
+        }
+
         return gson.toJson(src);
     }
-    
+
     /**
      * Json String을 class로 변환
      * 
@@ -58,13 +58,14 @@ public class GsonUtil
      *            변환할 클래스
      * @return
      */
-    public static <T> T fromJson(String json, Class<T> clazz)
-    {
-        if (json == null) { return null; }
-        
+    public static <T> T fromJson(String json, Class<T> clazz) {
+        if (json == null) {
+            return null;
+        }
+
         return gson.fromJson(json, clazz);
     }
-    
+
     /**
      * Json Array로 변환
      * 
@@ -72,13 +73,14 @@ public class GsonUtil
      *            json string
      * @return
      */
-    public static JsonArray getAsJsonArray(String json)
-    {
-        if (json == null) { return null; }
-        
+    public static JsonArray getAsJsonArray(String json) {
+        if (json == null) {
+            return null;
+        }
+
         return new JsonParser().parse(json).getAsJsonArray();
     }
-    
+
     /**
      * Json String을 특정 클래스 리스트로 변환
      * 
@@ -88,19 +90,16 @@ public class GsonUtil
      *            class
      * @return
      */
-    public static <T> List<T> getArrayList(String json, Class<T> clazz)
-    {
+    public static <T> List<T> getArrayList(String json, Class<T> clazz) {
         List<T> mResult = null;
         JsonArray jsonArray = getAsJsonArray(json);
-        if (jsonArray != null && !jsonArray.isJsonNull())
-        {
+        if (jsonArray != null && !jsonArray.isJsonNull()) {
             mResult = new ArrayList<T>();
-            for (int i = 0; i < jsonArray.size(); i++)
-            {
+            for (int i = 0; i < jsonArray.size(); i++) {
                 mResult.add(gson.fromJson(jsonArray.get(i), clazz));
             }
         }
-        
+
         return mResult;
     }
 }

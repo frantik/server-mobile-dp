@@ -28,38 +28,34 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * 
  */
 @Data
-public class DeviceRequest
-{
+public class DeviceRequest {
     /** 회원 아이디 */
     @JsonProperty("id")
     private String id;
-    
+
     /** 디바이스 토큰 */
     @JsonProperty("token")
     private String deviceToken;
-    
+
     /** 버전 */
     @JsonProperty("version")
     private String version;
-    
+
     /** 날짜 */
     @JsonProperty("date")
     private Date date;
-    
+
     // //////////////////////////////////////////////////////////////
     //
     // Constructors
     //
     // //////////////////////////////////////////////////////////////
-    public DeviceRequest()
-    {
-    }
-    
-    public DeviceRequest(String id, String token, String version)
-    {
+    public DeviceRequest() {}
+
+    public DeviceRequest(String id, String token, String version) {
         this.id = id;
         this.deviceToken = token;
         this.version = version;
     }
-    
+
 }

@@ -32,16 +32,14 @@ import com.dvdprime.server.mobile.model.FilterDTO;
  * @history
  */
 @Data
-public class FilterDAO
-{
-    
+public class FilterDAO {
+
     private SqlSession sqlSession;
-    
-    public FilterDAO(SqlSession sqlSession)
-    {
+
+    public FilterDAO(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
-    
+
     /**
      * 필터 목록 조회
      * 
@@ -50,11 +48,10 @@ public class FilterDAO
      * @return
      * @throws Exception
      */
-    public List<FilterDTO> selectFilterList(FilterDTO dto) throws Exception
-    {
+    public List<FilterDTO> selectFilterList(FilterDTO dto) throws Exception {
         return sqlSession.selectList("Filter.selectFilterList", dto);
     }
-    
+
     /**
      * 필터 갯수 조회
      * 
@@ -63,11 +60,10 @@ public class FilterDAO
      * @return
      * @throws Exception
      */
-    public int selectFilterCount(FilterDTO dto) throws Exception
-    {
+    public int selectFilterCount(FilterDTO dto) throws Exception {
         return (int) sqlSession.selectOne("Filter.selectFilterCount", dto);
     }
-    
+
     /**
      * 필터 정보 추가
      * 
@@ -76,11 +72,10 @@ public class FilterDAO
      * @return
      * @throws Exception
      */
-    public int insertFilterOne(FilterDTO dto) throws Exception
-    {
+    public int insertFilterOne(FilterDTO dto) throws Exception {
         return sqlSession.insert("Filter.insertFilterOne", dto);
     }
-    
+
     /**
      * 필터 정보 삭제
      * 
@@ -89,9 +84,8 @@ public class FilterDAO
      * @return
      * @throws Exception
      */
-    public int deleteFilterOne(FilterDTO dto) throws Exception
-    {
+    public int deleteFilterOne(FilterDTO dto) throws Exception {
         return sqlSession.update("Filter.deleteFilterOne", dto);
     }
-    
+
 }

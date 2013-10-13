@@ -39,11 +39,10 @@ import com.dvdprime.server.mobile.reponse.ListResponse;
  */
 @Path("/configs")
 @Produces(MediaType.APPLICATION_JSON)
-public class ConfigsResource
-{
+public class ConfigsResource {
     /** Logger */
     private final Logger logger = LoggerFactory.getLogger(ConfigsResource.class);
-    
+
     /**
      * 설정 정보 목록 요청
      * 
@@ -52,36 +51,28 @@ public class ConfigsResource
      * @return
      */
     @GET
-    public Response doGet(@QueryParam("id")
-    String id)
-    {
+    public Response doGet(@QueryParam("id") String id) {
         logger.info("Config GET params: id={}", id);
-        
-        try
-        {
+
+        try {
             return Response.ok(new ListResponse(new ConfigBO().searchConfigList(id))).build();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return Response.ok(ResponseMessage.SERVER_ERROR).build();
         }
     }
 
     @POST
-    public Response doPost()
-    {
+    public Response doPost() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     @PUT
-    public Response doPut()
-    {
+    public Response doPut() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     @DELETE
-    public Response doDelete()
-    {
+    public Response doDelete() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
 }

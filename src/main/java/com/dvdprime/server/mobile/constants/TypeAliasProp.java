@@ -28,19 +28,15 @@ import com.dvdprime.server.mobile.util.PropertiesUtil;
  * @created 2013. 10. 4. 오후 5:27:45
  * @history
  */
-public class TypeAliasProp
-{
-    
+public class TypeAliasProp {
+
     private static Map<String, Object> properties = null;
-    
-    public static Map<String, Object> getProperties()
-    {
-        if (properties == null)
-        {
+
+    public static Map<String, Object> getProperties() {
+        if (properties == null) {
             properties = PropertiesUtil.loadProperties("dvdprime/properties/typealias.properties.xml");
-            
-            if (properties == null)
-            {
+
+            if (properties == null) {
                 properties = new HashMap<String, Object>();
             }
             properties.put("ConfigDto", "com.dvdprime.server.mobile.model.ConfigDTO");
@@ -50,5 +46,5 @@ public class TypeAliasProp
         }
         return properties;
     }
-    
+
 }

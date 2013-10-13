@@ -40,11 +40,10 @@ import com.google.common.collect.ImmutableMap;
  */
 @Path("/count")
 @Produces(MediaType.APPLICATION_JSON)
-public class CountResource
-{
+public class CountResource {
     /** Logger */
     private final Logger logger = LoggerFactory.getLogger(CountResource.class);
-    
+
     /**
      * 설정 정보 목록 요청
      * 
@@ -53,37 +52,29 @@ public class CountResource
      * @return
      */
     @GET
-    public Response doGet(@QueryParam("id")
-    String id)
-    {
+    public Response doGet(@QueryParam("id") String id) {
         logger.info("Count GET params: id={}", id);
-        
-        try
-        {
+
+        try {
             int unreadCount = new NotificationBO().searchNotificationCount(id);
             return Response.ok(new DataResponse(ImmutableMap.builder().put("notification", unreadCount).build())).build();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return Response.ok(ResponseMessage.SERVER_ERROR).build();
         }
     }
-    
+
     @POST
-    public Response doPost()
-    {
+    public Response doPost() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     @PUT
-    public Response doPut()
-    {
+    public Response doPut() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     @DELETE
-    public Response doDelete()
-    {
+    public Response doDelete() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
 }

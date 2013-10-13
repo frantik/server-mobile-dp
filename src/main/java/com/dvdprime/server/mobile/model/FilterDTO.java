@@ -29,69 +29,64 @@ import com.dvdprime.server.mobile.util.DateUtil;
  * @history
  */
 @Data
-public class FilterDTO
-{
+public class FilterDTO {
     /**
      * 필터 고유번호
      */
     private int seq;
-    
+
     /**
      * 회원 아이디
      */
     private String memberId;
-    
+
     /**
      * 대상 아이디
      */
     private String targetId;
-    
+
     /**
      * 대상 닉네임
      */
     private String targetNick;
-    
+
     /**
      * 등록시간 (timestamp)
      */
     private long creationTime;
-    
+
     /**
      * 등록시간 (Decimal)
      */
     private String creationDecimal;
-    
+
     /**
      * 수정시간 (timestamp)
      */
     private long updatedTime;
-    
+
     /**
      * 수정시간 (Decimal)
      */
     private String updatedDecimal;
-    
+
     // //////////////////////////////////////////////////////////////////////////////////
     //
     // Constructors
     //
     // //////////////////////////////////////////////////////////////////////////////////
-    public FilterDTO() {
-    }
-    
-    public FilterDTO(String memberId)
-    {
+    public FilterDTO() {}
+
+    public FilterDTO(String memberId) {
         this.memberId = memberId;
     }
-    
-    public FilterDTO(String memberId, String targetId)
-    {
+
+    public FilterDTO(String memberId, String targetId) {
         this.memberId = memberId;
         this.targetId = targetId;
     }
-    
-    public FilterDTO(FilterRequest req)
-    {
+
+    public FilterDTO(FilterRequest req) {
         this.memberId = req.getId();
         this.targetId = req.getTargetId();
         this.targetNick = req.getTargetNick();

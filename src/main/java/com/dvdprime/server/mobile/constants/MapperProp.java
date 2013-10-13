@@ -28,19 +28,15 @@ import com.dvdprime.server.mobile.util.PropertiesUtil;
  * @created 2013. 10. 4. 오후 5:25:26
  * @history
  */
-public class MapperProp
-{
-    
+public class MapperProp {
+
     private static Map<String, Object> properties = null;
-    
-    public static Map<String, Object> getProperties()
-    {
-        if (properties == null)
-        {
+
+    public static Map<String, Object> getProperties() {
+        if (properties == null) {
             properties = PropertiesUtil.loadProperties("dvdprime/properties/mapper.properties.xml");
-            
-            if (properties == null)
-            {
+
+            if (properties == null) {
                 properties = new HashMap<String, Object>();
             }
             properties.put("configResultmap", "dvdprime/mapper/config_resultmap.xml");
@@ -54,5 +50,5 @@ public class MapperProp
         }
         return properties;
     }
-    
+
 }

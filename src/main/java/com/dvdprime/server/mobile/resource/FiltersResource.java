@@ -40,11 +40,10 @@ import com.dvdprime.server.mobile.reponse.ListResponse;
  */
 @Path("/filters")
 @Produces(MediaType.APPLICATION_JSON)
-public class FiltersResource
-{
+public class FiltersResource {
     /** Logger */
     private final Logger logger = LoggerFactory.getLogger(FiltersResource.class);
-    
+
     /**
      * 등록한 필터 목록
      * 
@@ -53,37 +52,29 @@ public class FiltersResource
      * @return
      */
     @GET
-    public Response Get(@QueryParam("id")
-    String id)
-    {
+    public Response Get(@QueryParam("id") String id) {
         logger.info("Filter GET params: {}", id);
-        
-        try
-        {
+
+        try {
             return Response.ok(new ListResponse(new FilterBO().searchFilterList(id))).build();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return Response.ok(ResponseMessage.SERVER_ERROR).build();
         }
     }
-    
+
     @POST
-    public Response doPost()
-    {
+    public Response doPost() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     @PUT
-    public Response doPut()
-    {
+    public Response doPut() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     @DELETE
-    public Response doDelete()
-    {
+    public Response doDelete() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
 }

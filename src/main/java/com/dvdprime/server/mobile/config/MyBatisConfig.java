@@ -45,32 +45,28 @@ import com.dvdprime.server.mobile.constants.TypeAliasProp;
  * @created 2013. 10. 4. 오후 5:24:04
  * @history
  */
-public class MyBatisConfig
-{
-    
+public class MyBatisConfig {
+
     /** Logger */
     private Logger logger = LoggerFactory.getLogger(MyBatisConfig.class);
-    
+
     /** 접속 DB ID */
     /**
      * Constructor
      * 
      * @param id
      */
-    public MyBatisConfig()
-    {
-    }
-    
+    public MyBatisConfig() {}
+
     /**
      * MyBatis 설정을 위한 Configuration을 반환한다.
      * 
      * @return
      */
-    public Configuration getConfig()
-    {
+    public Configuration getConfig() {
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
         Environment environment = new Environment("master", transactionFactory, getTomcatDataSource());
-        
+
         logger.info("MyBatis Configuration Initialization.");
         Configuration configuration = new Configuration(environment);
         configuration.setCacheEnabled(true);
@@ -82,37 +78,32 @@ public class MyBatisConfig
         configuration.setDefaultExecutorType(ExecutorType.REUSE);
         configuration.setDefaultStatementTimeout(25000);
         configuration.setSafeRowBoundsEnabled(true);
-        
+
         // Alias Type
         Iterator<String> it = TypeAliasProp.getProperties().keySet().iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             String key = it.next();
             logger.info("typeAliasRegistry: [{}] -> [{}]", key, TypeAliasProp.getProperties().get(key));
             configuration.getTypeAliasRegistry().registerAlias(key, (String) TypeAliasProp.getProperties().get(key));
         }
-        
+
         // Mapper
         it = MapperProp.getProperties().keySet().iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             String key = it.next();
             logger.info("mapper loaded: [{}]", MapperProp.getProperties().get(key));
-            try
-            {
+            try {
                 InputStream inputStream = Resources.getResourceAsStream((String) MapperProp.getProperties().get(key));
                 XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, (String) MapperProp.getProperties().get(key), configuration.getSqlFragments());
                 mapperParser.parse();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 logger.error("mapper parsing 중 오류가 발생했습니다.");
             }
         }
-        
+
         return configuration;
     }
-    
+
     /**
      * <pre>
      * Tomcat JDBC DataSource를 설정한다.
@@ -124,89 +115,69 @@ public class MyBatisConfig
      * 
      * @return
      */
-    private DataSource getTomcatDataSource()
-    {
+    private DataSource getTomcatDataSource() {
         logger.info("Tomcat DataSource Initialization.");
         DataSource dataSource = new DataSource();
         PoolProperties p = new PoolProperties();
-        
+
         // 공통 설정
         p.setDriverClassName(DBProp.MYSQL_DRIVER_NAME);
-        
+
         /*
-         * (boolean) Register the pool with JMX or not. The default value is
-         * true.
+         * (boolean) Register the pool with JMX or not. The default value is true.
          */
         p.setJmxEnabled(true);
-        
+
         /* Validation */
         p.setTestWhileIdle(true);
         p.setTestOnBorrow(true);
         p.setTestOnReturn(false);
         p.setValidationInterval(30000);
         p.setValidationQuery("SELECT 1");
-        
+
         /* Connection Pool Leaks */
         p.setRemoveAbandoned(true);
         p.setRemoveAbandonedTimeout(120);
         p.setLogAbandoned(true);
-        
+
         /*
-         * (int) The minimum amount of time an object may sit idle in the pool
-         * before it is eligible for eviction. The default value is 60000 (60
-         * seconds). 서버 설정값은 172800(global.wait_timeout)
+         * (int) The minimum amount of time an object may sit idle in the pool before it is eligible for eviction. The default value is 60000 (60 seconds). 서버 설정값은 172800(global.wait_timeout)
          */
         p.setMinEvictableIdleTimeMillis(10000);
         /*
-         * (int) The number of milliseconds to sleep between runs of the idle
-         * connection validation/cleaner thread. This value should not be set
-         * under 1 second. It dictates how often we check for idle, abandoned
-         * connections, and how often we validate idle connections. The default
-         * value is 5000 (5 seconds).
+         * (int) The number of milliseconds to sleep between runs of the idle connection validation/cleaner thread. This value should not be set under 1 second. It dictates how often we check for idle, abandoned connections, and how often we validate idle connections. The default value is 5000 (5 seconds).
          */
         p.setTimeBetweenEvictionRunsMillis(5000);
-        
+
         /*
-         * (String) A semicolon separated list of classnames extending
-         * org.apache.tomcat.jdbc.pool.JdbcInterceptor class. See Configuring
-         * JDBC interceptors below for more detailed description of syntaz and
-         * examples.
-         * 
-         * These interceptors will be inserted as an interceptor into the chain
-         * of operations on a java.sql.Connection object. The default value is
-         * null.
-         * 
-         * Predefined interceptors: org.apache.tomcat.jdbc.pool.interceptor.
-         * ConnectionState - keeps track of auto commit, read only, catalog and
-         * transaction isolation level. org.apache.tomcat.jdbc.pool.interceptor.
-         * StatementFinalizer - keeps track of opened statements, and closes
-         * them when the connection is returned to the pool.
+         * (String) A semicolon separated list of classnames extending org.apache.tomcat.jdbc.pool.JdbcInterceptor class. See Configuring JDBC interceptors below for more detailed description of syntaz and examples. These interceptors will be inserted as an interceptor into the chain of operations on a java.sql.Connection object. The default value is null. Predefined interceptors: org.apache.tomcat.jdbc.pool.interceptor. ConnectionState - keeps track of auto commit, read only, catalog and transaction
+         * isolation level. org.apache.tomcat.jdbc.pool.interceptor. StatementFinalizer - keeps track of opened statements, and closes them when the connection is returned to the pool.
          */
         p.setJdbcInterceptors("org.apache.tomcat.jdbc.pool.interceptor.ConnectionState; org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer");
-        
+
         /* Account */
         p.setUrl(DBProp.MYSQL_URL);
         p.setUsername(DBProp.MYSQL_USER);
         p.setPassword(DBProp.MYSQL_PASSWORD);
         p.setDefaultAutoCommit(true);
-        
+
         /* Size */
         p.setInitialSize(1);
         p.setMaxActive(100);
         p.setMaxIdle(10);
         p.setMinIdle(5);
         p.setMaxWait(20000);
-        
+
         Properties props = new Properties();
         props.put("useUnicode", "true");
         props.put("characterEncoding", "utf8");
         // props.put("failOverReadOnly", "yes");
         // props.put("roundRobinLoadBalance", "true");
         dataSource.setDbProperties(props);
-        
+
         dataSource.setPoolProperties(p);
-        
+
         return dataSource;
     }
-    
+
 }

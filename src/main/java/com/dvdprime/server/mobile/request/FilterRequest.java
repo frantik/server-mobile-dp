@@ -26,31 +26,27 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * 
  */
 @Data
-public class FilterRequest
-{
+public class FilterRequest {
     /** 요청 회원 아이디 */
     @JsonProperty("id")
     private String id;
-    
+
     /** 타겟 회원 토큰 */
     @JsonProperty("targetId")
     private String targetId;
-    
+
     /** 타겟 회원 닉네임 */
     @JsonProperty("targetNick")
     private String targetNick;
-    
+
     // //////////////////////////////////////////////////////////////
     //
     // Constructors
     //
     // //////////////////////////////////////////////////////////////
-    public FilterRequest()
-    {
-    }
-    
-    public FilterRequest(String id, String targetId, String targetNick)
-    {
+    public FilterRequest() {}
+
+    public FilterRequest(String id, String targetId, String targetNick) {
         this.id = id;
         this.targetId = targetId;
         this.targetNick = targetNick;

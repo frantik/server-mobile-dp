@@ -61,139 +61,119 @@ import com.google.common.base.Stopwatch;
  * @created 2013. 10. 9. 오전 12:00:10
  * @history
  */
-public class JerseyServletLoggingFilter implements Filter
-{
+public class JerseyServletLoggingFilter implements Filter {
     /** Logging */
     private Logger logger = LoggerFactory.getLogger(JerseyServletLoggingFilter.class);
-    
+
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException
-    {
+    public void init(FilterConfig filterConfig) throws ServletException {
         // This is doing simple logging and so doesn't need to
         // use or keep a reference to the filter config...
     }
-    
+
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
-    {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        
+
         Stopwatch sw = new Stopwatch().start();
-        
+
         // Filter에서 Request Parameters를 확인할 경우 Resource에서 @FormParam을 사용하여 파라미터를 받을 수 없다.
         // 그래서 POST 또는 PUT 전송일 경우에는 RequestWrapper를 사용하지 않는다.
         // 예외처리...
-        if (httpServletRequest.getMethod().equalsIgnoreCase("post") || httpServletRequest.getMethod().equalsIgnoreCase("put"))
-        {
+        if (httpServletRequest.getMethod().equalsIgnoreCase("post") || httpServletRequest.getMethod().equalsIgnoreCase("put")) {
             BufferedResponseWrapper bufferedResponse = new BufferedResponseWrapper(httpServletResponse);
-            
-            StringBuilder initLogMessage = new StringBuilder("REST Request - ").append("[HTTP METHOD:").append(httpServletRequest.getMethod()).append("] [PATH INFO:").append(httpServletRequest.getPathInfo()).append("] [REMOTE ADDRESS:")
-                    .append(httpServletRequest.getRemoteAddr()).append("]").append(" - is being processed... ");
+
+            StringBuilder initLogMessage = new StringBuilder("REST Request - ").append("[HTTP METHOD:").append(httpServletRequest.getMethod()).append("] [PATH INFO:").append(httpServletRequest.getPathInfo()).append("] [REMOTE ADDRESS:").append(httpServletRequest.getRemoteAddr()).append("]").append(" - is being processed... ");
             logger.info(initLogMessage.toString());
-            
+
             chain.doFilter(request, bufferedResponse);
-            
+
             initLogMessage.setLength(0);
-            initLogMessage.append("REST Response - ").append("[HTTP METHOD:").append(httpServletRequest.getMethod()).append("] [PATH INFO:").append(httpServletRequest.getPathInfo()).append("] [REMOTE ADDRESS:").append(httpServletRequest.getRemoteAddr())
-                    .append("]").append(" [RESPONSE:").append(bufferedResponse.getContent()).append("]").append(" - processed succesfully in ").append(sw.elapsed(TimeUnit.MILLISECONDS)).append("ms ");
+            initLogMessage.append("REST Response - ").append("[HTTP METHOD:").append(httpServletRequest.getMethod()).append("] [PATH INFO:").append(httpServletRequest.getPathInfo()).append("] [REMOTE ADDRESS:").append(httpServletRequest.getRemoteAddr()).append("]").append(" [RESPONSE:").append(bufferedResponse.getContent()).append("]").append(" - processed succesfully in ").append(sw.elapsed(TimeUnit.MILLISECONDS)).append("ms ");
             logger.info(initLogMessage.toString());
-        }
-        else
-        {
+        } else {
             Map<String, String> requestMap = this.getTypesafeRequestMap(httpServletRequest);
             BufferedRequestWrapper bufferedReqest = new BufferedRequestWrapper(httpServletRequest);
             BufferedResponseWrapper bufferedResponse = new BufferedResponseWrapper(httpServletResponse);
-            
-            StringBuilder initLogMessage = new StringBuilder("REST Request - ").append("[HTTP METHOD:").append(httpServletRequest.getMethod()).append("] [PATH INFO:").append(httpServletRequest.getPathInfo()).append("] [REQUEST PARAMETERS:")
-                    .append(requestMap).append("] [REQUEST BODY:").append(bufferedReqest.getRequestBody()).append("] [REMOTE ADDRESS:").append(httpServletRequest.getRemoteAddr()).append("]").append(" - is being processed... ");
+
+            StringBuilder initLogMessage = new StringBuilder("REST Request - ").append("[HTTP METHOD:").append(httpServletRequest.getMethod()).append("] [PATH INFO:").append(httpServletRequest.getPathInfo()).append("] [REQUEST PARAMETERS:").append(requestMap).append("] [REQUEST BODY:").append(bufferedReqest.getRequestBody()).append("] [REMOTE ADDRESS:").append(httpServletRequest.getRemoteAddr()).append("]").append(" - is being processed... ");
             logger.info(initLogMessage.toString());
-            
+
             chain.doFilter(bufferedReqest, bufferedResponse);
-            
+
             initLogMessage.setLength(0);
-            initLogMessage.append("REST Response - ").append("[HTTP METHOD:").append(httpServletRequest.getMethod()).append("] [PATH INFO:").append(httpServletRequest.getPathInfo()).append("] [REMOTE ADDRESS:").append(httpServletRequest.getRemoteAddr())
-                    .append("]").append(" [RESPONSE:").append(bufferedResponse.getContent()).append("]").append(" - processed succesfully in ").append(sw.elapsed(TimeUnit.MILLISECONDS)).append("ms ");
+            initLogMessage.append("REST Response - ").append("[HTTP METHOD:").append(httpServletRequest.getMethod()).append("] [PATH INFO:").append(httpServletRequest.getPathInfo()).append("] [REMOTE ADDRESS:").append(httpServletRequest.getRemoteAddr()).append("]").append(" [RESPONSE:").append(bufferedResponse.getContent()).append("]").append(" - processed succesfully in ").append(sw.elapsed(TimeUnit.MILLISECONDS)).append("ms ");
             logger.info(initLogMessage.toString());
         }
     }
-    
+
     @Override
-    public void destroy()
-    {
+    public void destroy() {
         logger.info("REST Web Services Servlet Filter is now shutting down due to container shutdown.");
     }
-    
-    private Map<String, String> getTypesafeRequestMap(HttpServletRequest request)
-    {
-        
+
+    private Map<String, String> getTypesafeRequestMap(HttpServletRequest request) {
+
         Map<String, String> typesafeRequestMap = new HashMap<String, String>();
-        
+
         Enumeration<?> requestParamNames = request.getParameterNames();
-        
-        while (requestParamNames.hasMoreElements())
-        {
-            
+
+        while (requestParamNames.hasMoreElements()) {
+
             String requestParamName = (String) requestParamNames.nextElement();
-            
+
             String requestParamValue = request.getParameter(requestParamName);
-            
+
             typesafeRequestMap.put(requestParamName, requestParamValue);
-            
+
         }
-        
+
         return typesafeRequestMap;
     }
-    
-    private static final class BufferedRequestWrapper extends HttpServletRequestWrapper
-    {
+
+    private static final class BufferedRequestWrapper extends HttpServletRequestWrapper {
         private ByteArrayInputStream bais = null;
-        
+
         private ByteArrayOutputStream baos = null;
-        
+
         private BufferedServletInputStream bsis = null;
-        
+
         private byte[] buffer = null;
-        
-        public BufferedRequestWrapper(HttpServletRequest req) throws IOException
-        {
+
+        public BufferedRequestWrapper(HttpServletRequest req) throws IOException {
             super(req);
-            
+
             // Read InputStream and store its content in a buffer.
             InputStream is = req.getInputStream();
             this.baos = new ByteArrayOutputStream();
             byte buf[] = new byte[1024];
             int letti;
-            while ((letti = is.read(buf)) > 0)
-            {
+            while ((letti = is.read(buf)) > 0) {
                 this.baos.write(buf, 0, letti);
             }
             this.buffer = this.baos.toByteArray();
         }
-        
+
         @Override
-        public ServletInputStream getInputStream()
-        {
+        public ServletInputStream getInputStream() {
             // Generate a new InputStream by stored buffer
             this.bais = new ByteArrayInputStream(this.buffer);
             // Istantiate a subclass of ServletInputStream
             // (Only ServletInputStream or subclasses of it are accepted by
             // the servlet engine!)
             this.bsis = new BufferedServletInputStream(this.bais);
-            
+
             return this.bsis;
         }
-        
-        String getRequestBody() throws IOException
-        {
+
+        String getRequestBody() throws IOException {
             BufferedReader reader = new BufferedReader(new InputStreamReader(this.getInputStream()));
             String line = null;
             StringBuilder inputBuffer = new StringBuilder();
-            do
-            {
+            do {
                 line = reader.readLine();
-                if (null != line)
-                {
+                if (null != line) {
                     inputBuffer.append(line.trim());
                 }
             } while (line != null);
@@ -201,317 +181,264 @@ public class JerseyServletLoggingFilter implements Filter
             return inputBuffer.toString().trim();
         }
     }
-    
+
     /*
      * Subclass of ServletInputStream needed by the servlet engine. All inputStream methods are wrapped and are delegated to the ByteArrayInputStream (obtained as constructor parameter)!
      */
-    private static final class BufferedServletInputStream extends ServletInputStream
-    {
+    private static final class BufferedServletInputStream extends ServletInputStream {
         private ByteArrayInputStream bais;
-        
-        public BufferedServletInputStream(ByteArrayInputStream bais)
-        {
+
+        public BufferedServletInputStream(ByteArrayInputStream bais) {
             this.bais = bais;
         }
-        
+
         @Override
-        public int available()
-        {
+        public int available() {
             return this.bais.available();
         }
-        
+
         @Override
-        public int read()
-        {
+        public int read() {
             return this.bais.read();
         }
-        
+
         @Override
-        public int read(byte[] buf, int off, int len)
-        {
+        public int read(byte[] buf, int off, int len) {
             return this.bais.read(buf, off, len);
         }
     }
-    
-    public class TeeServletOutputStream extends ServletOutputStream
-    {
-        
+
+    public class TeeServletOutputStream extends ServletOutputStream {
+
         private final TeeOutputStream targetStream;
-        
-        public TeeServletOutputStream(OutputStream one, OutputStream two)
-        {
+
+        public TeeServletOutputStream(OutputStream one, OutputStream two) {
             targetStream = new TeeOutputStream(one, two);
         }
-        
+
         @Override
-        public void write(int arg0) throws IOException
-        {
+        public void write(int arg0) throws IOException {
             this.targetStream.write(arg0);
         }
-        
-        public void flush() throws IOException
-        {
+
+        public void flush() throws IOException {
             super.flush();
             this.targetStream.flush();
         }
-        
-        public void close() throws IOException
-        {
+
+        public void close() throws IOException {
             super.close();
             this.targetStream.close();
         }
     }
-    
-    public class BufferedResponseWrapper implements HttpServletResponse
-    {
+
+    public class BufferedResponseWrapper implements HttpServletResponse {
         HttpServletResponse original;
-        
+
         TeeServletOutputStream tee;
-        
+
         ByteArrayOutputStream bos;
-        
-        public BufferedResponseWrapper(HttpServletResponse response)
-        {
+
+        public BufferedResponseWrapper(HttpServletResponse response) {
             original = response;
         }
-        
-        public String getContent()
-        {
-            if (bos != null)
-            {
+
+        public String getContent() {
+            if (bos != null) {
                 return bos.toString();
-            }
-            else
-            {
+            } else {
                 return "";
             }
         }
-        
-        public PrintWriter getWriter() throws IOException
-        {
+
+        public PrintWriter getWriter() throws IOException {
             return original.getWriter();
         }
-        
-        public ServletOutputStream getOutputStream() throws IOException
-        {
-            if (tee == null)
-            {
+
+        public ServletOutputStream getOutputStream() throws IOException {
+            if (tee == null) {
                 bos = new ByteArrayOutputStream();
                 tee = new TeeServletOutputStream(original.getOutputStream(), bos);
             }
             return tee;
         }
-        
+
         @Override
-        public String getCharacterEncoding()
-        {
+        public String getCharacterEncoding() {
             return original.getCharacterEncoding();
         }
-        
+
         @Override
-        public String getContentType()
-        {
+        public String getContentType() {
             return original.getContentType();
         }
-        
+
         @Override
-        public void setCharacterEncoding(String charset)
-        {
+        public void setCharacterEncoding(String charset) {
             original.setCharacterEncoding(charset);
         }
-        
+
         @Override
-        public void setContentLength(int len)
-        {
+        public void setContentLength(int len) {
             original.setContentLength(len);
         }
-        
+
         @Override
-        public void setContentType(String type)
-        {
+        public void setContentType(String type) {
             original.setContentType(type);
         }
-        
+
         @Override
-        public void setBufferSize(int size)
-        {
+        public void setBufferSize(int size) {
             original.setBufferSize(size);
         }
-        
+
         @Override
-        public int getBufferSize()
-        {
+        public int getBufferSize() {
             return original.getBufferSize();
         }
-        
+
         @Override
-        public void flushBuffer() throws IOException
-        {
+        public void flushBuffer() throws IOException {
             tee.flush();
         }
-        
+
         @Override
-        public void resetBuffer()
-        {
+        public void resetBuffer() {
             original.resetBuffer();
         }
-        
+
         @Override
-        public boolean isCommitted()
-        {
+        public boolean isCommitted() {
             return original.isCommitted();
         }
-        
+
         @Override
-        public void reset()
-        {
+        public void reset() {
             original.reset();
         }
-        
+
         @Override
-        public void setLocale(Locale loc)
-        {
+        public void setLocale(Locale loc) {
             original.setLocale(loc);
         }
-        
+
         @Override
-        public Locale getLocale()
-        {
+        public Locale getLocale() {
             return original.getLocale();
         }
-        
+
         @Override
-        public void addCookie(Cookie cookie)
-        {
+        public void addCookie(Cookie cookie) {
             original.addCookie(cookie);
         }
-        
+
         @Override
-        public boolean containsHeader(String name)
-        {
+        public boolean containsHeader(String name) {
             return original.containsHeader(name);
         }
-        
+
         @Override
-        public String encodeURL(String url)
-        {
+        public String encodeURL(String url) {
             return original.encodeURL(url);
         }
-        
+
         @Override
-        public String encodeRedirectURL(String url)
-        {
+        public String encodeRedirectURL(String url) {
             return original.encodeRedirectURL(url);
         }
-        
+
         @SuppressWarnings("deprecation")
         @Override
-        public String encodeUrl(String url)
-        {
+        public String encodeUrl(String url) {
             return original.encodeUrl(url);
         }
-        
+
         @SuppressWarnings("deprecation")
         @Override
-        public String encodeRedirectUrl(String url)
-        {
+        public String encodeRedirectUrl(String url) {
             return original.encodeRedirectUrl(url);
         }
-        
+
         @Override
-        public void sendError(int sc, String msg) throws IOException
-        {
+        public void sendError(int sc, String msg) throws IOException {
             original.sendError(sc, msg);
         }
-        
+
         @Override
-        public void sendError(int sc) throws IOException
-        {
+        public void sendError(int sc) throws IOException {
             original.sendError(sc);
         }
-        
+
         @Override
-        public void sendRedirect(String location) throws IOException
-        {
+        public void sendRedirect(String location) throws IOException {
             original.sendRedirect(location);
         }
-        
+
         @Override
-        public void setDateHeader(String name, long date)
-        {
+        public void setDateHeader(String name, long date) {
             original.setDateHeader(name, date);
         }
-        
+
         @Override
-        public void addDateHeader(String name, long date)
-        {
+        public void addDateHeader(String name, long date) {
             original.addDateHeader(name, date);
         }
-        
+
         @Override
-        public void setHeader(String name, String value)
-        {
+        public void setHeader(String name, String value) {
             original.setHeader(name, value);
         }
-        
+
         @Override
-        public void addHeader(String name, String value)
-        {
+        public void addHeader(String name, String value) {
             original.addHeader(name, value);
         }
-        
+
         @Override
-        public void setIntHeader(String name, int value)
-        {
+        public void setIntHeader(String name, int value) {
             original.setIntHeader(name, value);
         }
-        
+
         @Override
-        public void addIntHeader(String name, int value)
-        {
+        public void addIntHeader(String name, int value) {
             original.addIntHeader(name, value);
         }
-        
+
         @Override
-        public void setStatus(int sc)
-        {
+        public void setStatus(int sc) {
             original.setStatus(sc);
         }
-        
+
         @SuppressWarnings("deprecation")
         @Override
-        public void setStatus(int sc, String sm)
-        {
+        public void setStatus(int sc, String sm) {
             original.setStatus(sc, sm);
         }
-        
+
         @Override
-        public int getStatus()
-        {
+        public int getStatus() {
             // TODO Auto-generated method stub
             return 0;
         }
-        
+
         @Override
-        public String getHeader(String name)
-        {
+        public String getHeader(String name) {
             // TODO Auto-generated method stub
             return null;
         }
-        
+
         @Override
-        public Collection<String> getHeaders(String name)
-        {
+        public Collection<String> getHeaders(String name) {
             // TODO Auto-generated method stub
             return null;
         }
-        
+
         @Override
-        public Collection<String> getHeaderNames()
-        {
+        public Collection<String> getHeaderNames() {
             // TODO Auto-generated method stub
             return null;
         }
-        
+
     }
 }

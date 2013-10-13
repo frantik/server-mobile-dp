@@ -38,17 +38,15 @@ import com.dvdprime.server.mobile.constants.ResponseMessage;
  */
 @Path("/config")
 @Produces(MediaType.APPLICATION_JSON)
-public class ConfigResource
-{
+public class ConfigResource {
     /** Logger */
     private final Logger logger = LoggerFactory.getLogger(ConfigResource.class);
-    
+
     @GET
-    public Response doGet()
-    {
+    public Response doGet() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     /**
      * 설정 정보 수정
      * 
@@ -61,39 +59,29 @@ public class ConfigResource
      * @return
      */
     @PUT
-    public Response doPut(@FormParam("id")
-    String id, @FormParam("type")
-    String type, @FormParam("enabled")
-    boolean enabled)
-    {
+    public Response doPut(@FormParam("id") String id, 
+            @FormParam("type") String type, 
+            @FormParam("enabled") boolean enabled) {
         logger.info("Config PUT params: id={}, type={}, enabled={}", new Object[] { id, type, enabled });
-        
-        try
-        {
-            if (new ConfigBO().modifyConfigOne(id, type, enabled))
-            {
+
+        try {
+            if (new ConfigBO().modifyConfigOne(id, type, enabled)) {
                 return Response.ok(ResponseMessage.SUCCESS).build();
-            }
-            else
-            {
+            } else {
                 return Response.ok(ResponseMessage.FAIL).build();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return Response.ok(ResponseMessage.SERVER_ERROR).build();
         }
     }
-    
+
     @POST
-    public Response doPost()
-    {
+    public Response doPost() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     @DELETE
-    public Response doDelete()
-    {
+    public Response doDelete() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
 }

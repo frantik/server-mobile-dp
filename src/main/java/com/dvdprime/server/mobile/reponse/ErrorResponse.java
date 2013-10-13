@@ -23,35 +23,31 @@ import com.dvdprime.server.mobile.constants.HttpStatus;
 
 /**
  * 에러 반환 클래스
- *
+ * 
  * @author 작은광명
  */
 @Data
-public class ErrorResponse
-{
-    
+public class ErrorResponse {
+
     @JsonProperty("status")
     private int error;
-    
+
     @JsonProperty("message")
     private String errorMessage;
-    
-    public ErrorResponse()
-    {
+
+    public ErrorResponse() {
         super();
     }
-    
-    public ErrorResponse(String errorMessage)
-    {
+
+    public ErrorResponse(String errorMessage) {
         this.error = HttpStatus.FORBIDDEN;
         this.errorMessage = errorMessage;
     }
-    
-    public ErrorResponse(int error, String errorMessage)
-    {
+
+    public ErrorResponse(int error, String errorMessage) {
         super();
         this.error = error;
         this.errorMessage = errorMessage;
     }
-    
+
 }

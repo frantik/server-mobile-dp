@@ -26,25 +26,23 @@ import lombok.Data;
  * @history
  */
 @Data
-public class Config
-{
+public class Config {
     /**
      * 설정 종류
      */
     private String type;
-    
+
     /**
      * 설정 활성화 여부 (true: 활성화, false: 비활성화)
      */
     private boolean enabled;
-    
+
     // //////////////////////////////////////////////////////////////////////////////
     //
     // Constructors
     //
     // //////////////////////////////////////////////////////////////////////////////
-    public Config(String type, String enabled)
-    {
+    public Config(String type, String enabled) {
         this.type = type;
         this.enabled = enabled.equals("01") ? true : false;
     }

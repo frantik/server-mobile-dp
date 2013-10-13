@@ -16,13 +16,14 @@
 package com.dvdprime.server.mobile.resource;
 
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
@@ -40,17 +41,15 @@ import com.dvdprime.server.mobile.request.NotificationRequest;
  */
 @Path("/notification")
 @Produces(MediaType.APPLICATION_JSON)
-public class NotificationResource
-{
+public class NotificationResource {
     /** Logger */
     private final Logger logger = LoggerFactory.getLogger(NotificationResource.class);
-    
+
     @GET
-    public Response doGet()
-    {
+    public Response doGet() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     /**
      * 알림 정보 등록
      * 
@@ -58,38 +57,34 @@ public class NotificationResource
      * @return
      */
     @POST
-    public Response doPost(final MultivaluedMap<String, String> formParameters)
-    {
-        NotificationRequest param = NotificationRequest.fromMultiValuedFormParameters(formParameters);
+    public Response doPost(@FormParam("ids") String ids,
+            @DefaultValue("01") @FormParam("type") String type,
+            @FormParam("title") String title,
+            @FormParam("message") String message,
+            @FormParam("targetUrl") String targetUrl,
+            @FormParam("targetKey") String targetKey) {
+        NotificationRequest param = new NotificationRequest(ids, type, title, message, targetUrl, targetKey);
         logger.info("Notification POST params: {}", param);
-        
-        try
-        {
-            if (new NotificationBO().creationNotificationOne(param))
-            {
+
+        try {
+            if (new NotificationBO().creationNotificationOne(param)) {
                 return Response.ok(ResponseMessage.SUCCESS).build();
-            }
-            else
-            {
+            } else {
                 return Response.ok(ResponseMessage.FAIL).build();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return Response.ok(ResponseMessage.SERVER_ERROR).build();
         }
-        
+
     }
-    
+
     @PUT
-    public Response doPut()
-    {
+    public Response doPut() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     @DELETE
-    public Response doDelete()
-    {
+    public Response doDelete() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
 }

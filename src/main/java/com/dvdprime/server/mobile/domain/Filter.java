@@ -26,25 +26,23 @@ import lombok.Data;
  * @history
  */
 @Data
-public class Filter
-{
+public class Filter {
     /**
      * 대상 아이디
      */
     private String targetId;
-    
+
     /**
      * 대상 닉네임
      */
     private String targetNick;
-    
+
     // ///////////////////////////////////////////////////////////////
     //
     // Constructors
     //
     // ///////////////////////////////////////////////////////////////
-    public Filter(String targetId, String targetNick)
-    {
+    public Filter(String targetId, String targetNick) {
         this.targetId = targetId;
         this.targetNick = targetNick;
     }

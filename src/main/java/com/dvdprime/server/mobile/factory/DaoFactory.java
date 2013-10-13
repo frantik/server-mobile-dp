@@ -30,31 +30,25 @@ import com.dvdprime.server.mobile.config.MyBatisConfig;
  * @created 2013. 10. 4. 오후 6:11:19
  * @history
  */
-public class DaoFactory
-{
+public class DaoFactory {
     /** Logger */
     private static Logger logger = LoggerFactory.getLogger(DaoFactory.class);
-    
+
     /**
-     * Master SqlSessionFactory instances are thread safe, so you only need one.
-     * In this case, we'll use a static singleton. So sue me. ;-)
+     * Master SqlSessionFactory instances are thread safe, so you only need one. In this case, we'll use a static singleton. So sue me. ;-)
      */
     private static SqlSessionFactory sqlSessionFactory;
-    
+
     /**
      * Master Database Session Factory
      * 
      * @return SqlSessionFactory
      */
-    public static SqlSessionFactory getInstance()
-    {
+    public static SqlSessionFactory getInstance() {
         /**
-         * It's not a good idea to put code that can fail in a class
-         * initializer, but for sake of argument, here's how you configure an
-         * SQL Map.
+         * It's not a good idea to put code that can fail in a class initializer, but for sake of argument, here's how you configure an SQL Map.
          */
-        if (sqlSessionFactory == null)
-        {
+        if (sqlSessionFactory == null) {
             // SqlSessionFactoryBuilder를 초기화
             SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
             // Properties의 SqlSessionFactory를 선언한다.
@@ -63,5 +57,5 @@ public class DaoFactory
         }
         return sqlSessionFactory;
     }
-    
+
 }

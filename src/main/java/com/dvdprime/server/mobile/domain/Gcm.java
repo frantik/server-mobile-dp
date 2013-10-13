@@ -23,37 +23,33 @@ import com.dvdprime.server.mobile.model.NotificationDTO;
  * GCM 모델
  * 
  * @author 작은광명
- *
+ * 
  */
 @Data
-public class Gcm
-{
+public class Gcm {
     /** 글 제목 */
     private String title;
-    
+
     /** 메시지 */
     private String message;
-    
+
     /** 링크 URL */
     private String targetUrl;
-    
+
     /** 해당 오브젝트 고유번호 */
     private String targetKey;
-    
+
     /** 확인 안한 알림 갯수 */
     private int count;
-    
+
     // //////////////////////////////////////////////////////////////
     //
     // Constructors
     //
     // //////////////////////////////////////////////////////////////
-    public Gcm()
-    {
-    }
-    
-    public Gcm(NotificationDTO dto)
-    {
+    public Gcm() {}
+
+    public Gcm(NotificationDTO dto) {
         this.title = dto.getTitle();
         this.message = dto.getMessage();
         this.targetUrl = dto.getTargetUrl();

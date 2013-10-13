@@ -42,49 +42,39 @@ import com.dvdprime.server.mobile.request.NotificationRequest;
  */
 @Path("/notifications")
 @Produces(MediaType.APPLICATION_JSON)
-public class NotificationsResource
-{
+public class NotificationsResource {
     /** Logger */
     private final Logger logger = LoggerFactory.getLogger(NotificationsResource.class);
-    
+
     @GET
-    public Response doGet(@DefaultValue("1")
-    @QueryParam("page")
-    int page, @DefaultValue("20")
-    @QueryParam("limit")
-    int limit, @QueryParam("startTime")
-    long startTime, @QueryParam("id")
-    String id)
-    {
+    public Response doGet(@DefaultValue("1") 
+    @QueryParam("page") int page, 
+    @DefaultValue("20") @QueryParam("limit") int limit, 
+    @QueryParam("startTime") long startTime, 
+    @QueryParam("id") String id) {
         NotificationRequest param = new NotificationRequest(id, page, limit, startTime);
         logger.info("Notification GET params: {}", param);
-        
-        try
-        {
+
+        try {
             return Response.ok(new ListResponse(new NotificationBO().searchNotificationList(param))).build();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return Response.ok(ResponseMessage.SERVER_ERROR).build();
         }
     }
-    
+
     @POST
-    public Response doPost()
-    {
+    public Response doPost() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     @PUT
-    public Response doPut()
-    {
+    public Response doPut() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
     @DELETE
-    public Response doDelete()
-    {
+    public Response doDelete() {
         return Response.ok(ResponseMessage.NOT_FOUND).build();
     }
-    
+
 }

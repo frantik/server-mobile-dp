@@ -21,43 +21,40 @@ import com.dvdprime.server.mobile.util.PropertiesUtil;
 
 /**
  * DB properties 파일에 정의된 Resource
- *
+ * 
  * @author 작은광명
  * @version 1.0
  * @created 2013. 10. 8. 오후 10:23:45
  * @history
  */
-public class DBProp
-{
-    
+public class DBProp {
+
     private static Map<String, Object> dbProperties = null;
-    
-    private static Map<String, Object> getDbProperties()
-    {
-        if (dbProperties == null)
-        {
+
+    private static Map<String, Object> getDbProperties() {
+        if (dbProperties == null) {
             dbProperties = PropertiesUtil.loadProperties("dvdprime/properties/db.properties.xml");
         }
-        
+
         return dbProperties;
     }
-    
+
     // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // DB Properties
     //
     // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+
     /** MySQL Driver Class Name */
     public static final String MYSQL_DRIVER_NAME = "com.mysql.jdbc.Driver";
-    
+
     /** MySQL Master DB URL */
     public static final String MYSQL_URL = (String) getDbProperties().get("jdbc.mysql.url");
-    
+
     /** MySQL Master DB User Name */
     public static final String MYSQL_USER = (String) getDbProperties().get("jdbc.mysql.username");
-    
+
     /** MySQL Master DB Password */
     public static final String MYSQL_PASSWORD = (String) getDbProperties().get("jdbc.mysql.password");
-    
+
 }

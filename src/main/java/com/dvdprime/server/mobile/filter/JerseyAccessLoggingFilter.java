@@ -43,56 +43,48 @@ import org.slf4j.LoggerFactory;
  * @created 2013. 10. 8. 오후 11:59:59
  * @history
  */
-public class JerseyAccessLoggingFilter implements Filter
-{
+public class JerseyAccessLoggingFilter implements Filter {
     /** Logging */
     private Logger logger = LoggerFactory.getLogger(JerseyAccessLoggingFilter.class);
-    
+
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException
-    {
+    public void init(FilterConfig filterConfig) throws ServletException {
         // This is doing simple logging and so doesn't need to
         // use or keep a reference to the filter config...
     }
-    
+
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
-    {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         Map<String, String> requestMap = this.getTypesafeRequestMap(httpServletRequest);
-        
-        final String logMessage = new StringBuilder("REST Request - ").append("[HTTP METHOD:").append(httpServletRequest.getMethod()).append("] [PATH INFO:").append(httpServletRequest.getPathInfo()).append("] [REQUEST HEADERS:").append(requestMap)
-                .append("] [REMOTE ADDRESS:").append(httpServletRequest.getRemoteAddr()).append("]").toString();
-        
+
+        final String logMessage = new StringBuilder("REST Request - ").append("[HTTP METHOD:").append(httpServletRequest.getMethod()).append("] [PATH INFO:").append(httpServletRequest.getPathInfo()).append("] [REQUEST HEADERS:").append(requestMap).append("] [REMOTE ADDRESS:").append(httpServletRequest.getRemoteAddr()).append("]").toString();
+
         logger.info(logMessage);
-        
+
         chain.doFilter(request, response);
     }
-    
+
     @Override
-    public void destroy()
-    {
-    }
-    
-    private Map<String, String> getTypesafeRequestMap(HttpServletRequest request)
-    {
-        
+    public void destroy() {}
+
+    private Map<String, String> getTypesafeRequestMap(HttpServletRequest request) {
+
         Map<String, String> typesafeRequestMap = new HashMap<String, String>();
-        
+
         Enumeration<?> requestHeaderNames = request.getHeaderNames();
-        
-        while (requestHeaderNames.hasMoreElements())
-        {
-            
+
+        while (requestHeaderNames.hasMoreElements()) {
+
             String requestHeaderName = (String) requestHeaderNames.nextElement();
-            
+
             String requestHeaderValue = request.getHeader(requestHeaderName);
-            
+
             typesafeRequestMap.put(requestHeaderName, requestHeaderValue);
-            
+
         }
-        
+
         return typesafeRequestMap;
     }
-    
+
 }

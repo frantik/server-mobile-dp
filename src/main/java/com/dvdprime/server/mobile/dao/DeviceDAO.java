@@ -32,16 +32,14 @@ import com.dvdprime.server.mobile.model.DeviceDTO;
  * @history
  */
 @Data
-public class DeviceDAO
-{
-    
+public class DeviceDAO {
+
     private SqlSession sqlSession;
-    
-    public DeviceDAO(SqlSession sqlSession)
-    {
+
+    public DeviceDAO(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
-    
+
     /**
      * 디바이스 목록 조회
      * 
@@ -50,11 +48,10 @@ public class DeviceDAO
      * @return
      * @throws Exception
      */
-    public List<DeviceDTO> selectDeviceList(DeviceDTO dto) throws Exception
-    {
+    public List<DeviceDTO> selectDeviceList(DeviceDTO dto) throws Exception {
         return sqlSession.selectList("Device.selectDeviceList", dto);
     }
-    
+
     /**
      * 디바이스 정보 조회
      * 
@@ -63,11 +60,10 @@ public class DeviceDAO
      * @return
      * @throws Exception
      */
-    public DeviceDTO selectDeviceOne(DeviceDTO dto) throws Exception
-    {
+    public DeviceDTO selectDeviceOne(DeviceDTO dto) throws Exception {
         return (DeviceDTO) sqlSession.selectOne("Device.selectDeviceOne", dto);
     }
-    
+
     /**
      * 디바이스 갯수 조회
      * 
@@ -76,11 +72,10 @@ public class DeviceDAO
      * @return
      * @throws Exception
      */
-    public int selectDeviceCount(DeviceDTO dto) throws Exception
-    {
+    public int selectDeviceCount(DeviceDTO dto) throws Exception {
         return (int) sqlSession.selectOne("Device.selectDeviceCount", dto);
     }
-    
+
     /**
      * 디바이스 정보 추가
      * 
@@ -89,11 +84,10 @@ public class DeviceDAO
      * @return
      * @throws Exception
      */
-    public int insertDeviceOne(DeviceDTO dto) throws Exception
-    {
+    public int insertDeviceOne(DeviceDTO dto) throws Exception {
         return sqlSession.insert("Device.insertDeviceOne", dto);
     }
-    
+
     /**
      * 디바이스 정보 업데이트
      * 
@@ -102,11 +96,10 @@ public class DeviceDAO
      * @return
      * @throws Exception
      */
-    public int updateDeviceOne(DeviceDTO dto) throws Exception
-    {
+    public int updateDeviceOne(DeviceDTO dto) throws Exception {
         return sqlSession.update("Device.updateDeviceOne", dto);
     }
-    
+
     /**
      * 디바이스 정보 삭제
      * 
@@ -115,9 +108,8 @@ public class DeviceDAO
      * @return
      * @throws Exception
      */
-    public int deleteDeviceOne(DeviceDTO dto) throws Exception
-    {
+    public int deleteDeviceOne(DeviceDTO dto) throws Exception {
         return sqlSession.update("Device.deleteDeviceOne", dto);
     }
-    
+
 }

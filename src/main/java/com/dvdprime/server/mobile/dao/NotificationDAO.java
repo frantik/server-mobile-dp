@@ -32,16 +32,14 @@ import com.dvdprime.server.mobile.model.NotificationDTO;
  * @history
  */
 @Data
-public class NotificationDAO
-{
-    
+public class NotificationDAO {
+
     private SqlSession sqlSession;
-    
-    public NotificationDAO(SqlSession sqlSession)
-    {
+
+    public NotificationDAO(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
-    
+
     /**
      * 알림 목록 조회
      * 
@@ -50,22 +48,20 @@ public class NotificationDAO
      * @return
      * @throws Exception
      */
-    public List<NotificationDTO> selectNotificationList(NotificationDTO dto) throws Exception
-    {
+    public List<NotificationDTO> selectNotificationList(NotificationDTO dto) throws Exception {
         return sqlSession.selectList("Notification.selectNotificationList", dto);
     }
-    
+
     /**
      * 알림 전송 대기 목록 조회
      * 
      * @return
      * @throws Exception
      */
-    public List<NotificationDTO> selectNotificationSendList() throws Exception
-    {
+    public List<NotificationDTO> selectNotificationSendList() throws Exception {
         return sqlSession.selectList("Notification.selectNotificationSendList");
     }
-    
+
     /**
      * 알림 갯수 조회
      * 
@@ -74,11 +70,10 @@ public class NotificationDAO
      * @return
      * @throws Exception
      */
-    public int selectNotificationCount(NotificationDTO dto) throws Exception
-    {
+    public int selectNotificationCount(NotificationDTO dto) throws Exception {
         return (int) sqlSession.selectOne("Notification.selectNotificationCount", dto);
     }
-    
+
     /**
      * 알림 정보 추가
      * 
@@ -87,11 +82,10 @@ public class NotificationDAO
      * @return
      * @throws Exception
      */
-    public int insertNotificationOne(NotificationDTO dto) throws Exception
-    {
+    public int insertNotificationOne(NotificationDTO dto) throws Exception {
         return sqlSession.insert("Notification.insertNotificationOne", dto);
     }
-    
+
     /**
      * 알림 정보 업데이트
      * 
@@ -100,9 +94,8 @@ public class NotificationDAO
      * @return
      * @throws Exception
      */
-    public int updateNotificationOne(NotificationDTO dto) throws Exception
-    {
+    public int updateNotificationOne(NotificationDTO dto) throws Exception {
         return sqlSession.update("Notification.updateNotificationOne", dto);
     }
-    
+
 }
