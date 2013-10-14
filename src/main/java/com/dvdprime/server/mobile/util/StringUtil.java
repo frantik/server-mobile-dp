@@ -566,4 +566,58 @@ public class StringUtil {
 
         return sb.toString();
     }
+
+    /**
+     * <p>
+     * 문자열이 해당 길이보다 크면, 자른 후 줄임말을 붙여준다.
+     * </p>
+     * <p>
+     * 길이는 기본문자들(영어/숫자등)이 1으로, 다국어(한글등)이면 2로 계산한다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.curtail(null, *, *) = null
+     * StringUtil.curtail("abcdefghijklmnopqr", 10, null) = "abcdefghij"
+     * StringUtil.curtail("abcdefghijklmnopqr", 10, "..") = "abcdefgh.."
+     * StringUtil.curtail("한글을 사랑합시다.", 10, null)   = "한글을 사랑"
+     * StringUtil.curtail("한글을 사랑합시다.", 10, "..")   = "한글을 사.."
+     * </pre>
+     * 
+     * 
+     * @param str
+     *            문자열
+     * @param size
+     *            길이(byte 길이)
+     * @param tail
+     *            줄임말
+     * @return
+     */
+    public static String curtail(String str, int size, String tail) {
+        if (str == null) {
+            return null;
+        }
+        int strLen = str.length();
+        int tailLen = (tail != null) ? tail.length() : 0;
+        int maxLen = size - tailLen;
+        int curLen = 0;
+        int index = 0;
+        for (; index < strLen && curLen < maxLen; index++) {
+            if (Character.getType(str.charAt(index)) == Character.OTHER_LETTER) {
+                curLen++;
+            }
+            curLen++;
+        }
+
+        if (index == strLen) {
+            return str;
+        } else {
+            StringBuilder result = new StringBuilder();
+            result.append(str.substring(0, index));
+            if (tail != null) {
+                result.append(tail);
+            }
+            return result.toString();
+        }
+    }
+
 }

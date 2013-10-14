@@ -138,7 +138,7 @@ public class NotificationBO {
         try {
             String data = HttpUtil.httpConnect(url);
             if (data != null) {
-                int lastIndex = data.lastIndexOf(content);
+                int lastIndex = data.lastIndexOf(StringUtil.curtail(content, 80, null));
                 if (lastIndex > -1) {
                     data = data.substring(4000, lastIndex);
                     lastIndex = data.lastIndexOf("anchor_");
