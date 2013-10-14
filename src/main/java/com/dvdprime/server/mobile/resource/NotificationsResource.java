@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dvdprime.server.mobile.bo.NotificationBO;
 import com.dvdprime.server.mobile.constants.ResponseMessage;
-import com.dvdprime.server.mobile.reponse.ListResponse;
+import com.dvdprime.server.mobile.reponse.ResultListResponse;
 import com.dvdprime.server.mobile.request.NotificationRequest;
 
 /**
@@ -56,7 +56,7 @@ public class NotificationsResource {
         logger.info("Notification GET params: {}", param);
 
         try {
-            return Response.ok(new ListResponse(new NotificationBO().searchNotificationList(param))).build();
+            return Response.ok(new ResultListResponse(param, new NotificationBO().searchNotificationList(param))).build();
         } catch (Exception e) {
             return Response.ok(ResponseMessage.SERVER_ERROR).build();
         }

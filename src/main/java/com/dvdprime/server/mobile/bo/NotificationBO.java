@@ -28,6 +28,7 @@ import com.dvdprime.server.mobile.factory.DaoFactory;
 import com.dvdprime.server.mobile.model.NotificationDTO;
 import com.dvdprime.server.mobile.request.NotificationRequest;
 import com.dvdprime.server.mobile.util.DateUtil;
+import com.dvdprime.server.mobile.util.HttpUtil;
 import com.dvdprime.server.mobile.util.StringUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
@@ -67,9 +68,11 @@ public class NotificationBO {
                     for (NotificationDTO notification : resultList) {
                         mResult.add(new Notification(notification));
                         // 조회한 내용은 모두 읽음으로 변경한다.
-                        notification.setReadFlag(Const.READ_FLAG_02);
-                        notification.setUpdatedDecimal(updatedDecimal);
-                        dao.updateNotificationOne(notification);
+                        if (!StringUtil.equals(notification.getReadFlag(), Const.READ_FLAG_02)) {
+                            notification.setReadFlag(Const.READ_FLAG_02);
+                            notification.setUpdatedDecimal(updatedDecimal);
+                            dao.updateNotificationOne(notification);
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -111,12 +114,42 @@ public class NotificationBO {
             try (SqlSession sqlSession = DaoFactory.getInstance().openSession()) {
                 NotificationDTO dto = new NotificationDTO();
                 dto.setMemberId(memberId);
-                ;
                 dto.setReadFlag(Const.READ_FLAG_01);
                 result = new NotificationDAO(sqlSession).selectNotificationCount(dto);
             } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
+        }
+
+        return result;
+    }
+
+    /**
+     * 상세 URL을 요청하여 댓글 고유아이디를 조회한다.
+     * 
+     * @param url
+     *            글 URL
+     * @param content
+     *            댓글 내용
+     * @return
+     */
+    public String searchCommentKey(String url, String content) {
+        String result = null;
+        try {
+            String data = HttpUtil.httpConnect(url);
+            if (data != null) {
+                int lastIndex = data.lastIndexOf(content);
+                if (lastIndex > -1) {
+                    data = data.substring(4000, lastIndex);
+                    lastIndex = data.lastIndexOf("anchor_");
+                    if (lastIndex > -1) {
+                        data = data.substring(lastIndex);
+                        result = StringUtil.substringBetween(data, "_", "\"");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
         }
 
         return result;
@@ -133,6 +166,11 @@ public class NotificationBO {
         boolean result = false;
 
         if (request.getIds() != null && request.getMessage() != null && request.getTargetUrl() != null) {
+            // 대상 아이디를 구한다.
+            if (StringUtil.isBlank(request.getTargetKey())) {
+                request.setTargetKey(searchCommentKey(request.getTargetUrl(), request.getMessage()));
+            }
+            // DB 처리한다.
             try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
                 NotificationDAO dao = new NotificationDAO(sqlSession);
                 for (String id : Splitter.on(",").omitEmptyStrings().trimResults().split(request.getIds())) {

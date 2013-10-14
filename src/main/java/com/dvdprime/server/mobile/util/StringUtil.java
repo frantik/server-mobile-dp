@@ -438,6 +438,75 @@ public class StringUtil {
     }
 
     /**
+     * <p>
+     * 처음 발견한 구분자의 위치까지 문자열을 자른다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.substringBefore(null, *)       = null
+     * StringUtil.substringBefore("", *)         = ""
+     * StringUtil.substringBefore("han", null)   = "han"
+     * StringUtil.substringBefore("han", "")     = ""
+     * StringUtil.substringBefore("hanhan", "a") = "h"
+     * StringUtil.substringBefore("hanhan", "g") = "hanhan"
+     * </pre>
+     * 
+     * @param str
+     *            문자열
+     * @param separator
+     *            구분자
+     * @return
+     */
+    public static String substringBefore(String str, String separator)
+    {
+        if (isEmpty(str) || separator == null) { return str; }
+        if (separator.length() == 0) { return EMPTY; }
+        int endIndex = str.indexOf(separator);
+        if (endIndex == INDEX_NOT_FOUND) { return str; }
+        return str.substring(0, endIndex);
+    }
+    
+    /**
+     * <p>
+     * 시작 문자부터 끝 문자열까지 자른다.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.substringBetween(null, *, *)       = null
+     * StringUtil.substringBetween(*, null, *)       = null
+     * StringUtil.substringBetween(*, *, null)       = null
+     * StringUtil.substringBetween("h<a>n", "<", ">") = "a"
+     * StringUtil.substringBetween("h<a><b>n", "<", ">") = "a"
+     * </pre>
+     * 
+     * @param str
+     *            문자열
+     * @param separator
+     *            구분자
+     * @return
+     * @since 1.1
+     */
+    public static String substringBetween(String str, String open, String close)
+    {
+        if (str == null || open == null || close == null) { return null; }
+        
+        int start = str.indexOf(open);
+        if (start != INDEX_NOT_FOUND)
+        {
+            int end = str.indexOf(close, start + open.length());
+            if (end != INDEX_NOT_FOUND)
+            {
+                return str.substring(start + open.length(), end);
+            }
+            else
+            {
+                // 끝이 없으면 null이 좋을까, 끝까지가 좋을까...
+            }
+        }
+        return null;
+    }
+    
+    /**
      * URL에서 해당 파라미터를 제외하고 반환한다.
      * 
      * @param url
