@@ -140,7 +140,7 @@ public class NotificationBO {
         try {
             String data = HttpUtil.httpConnect(url);
             if (data != null) {
-                int lastIndex = data.lastIndexOf(StringUtil.curtail(content, 20, null));
+                int lastIndex = data.lastIndexOf(StringUtil.curtail(StringUtil.replace(content, "\n", "<br>"), 20, null));
                 if (lastIndex > -1) {
                     result = Maps.newHashMap();
                     data = data.substring(40000, lastIndex);
