@@ -104,6 +104,9 @@
            <if test="!empty(targetId)">
            , notification_target_id=#{targetId}
            </if>
+           <if test="!empty(creationDecimal)">
+           , creation_time=#{creationDecimal}
+           </if>
      <where>
         <if test="seq > 0">
         AND notification_seq=#{seq}

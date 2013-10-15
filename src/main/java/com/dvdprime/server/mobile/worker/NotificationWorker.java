@@ -135,7 +135,8 @@ public class NotificationWorker {
                                     // devices.get(i) has more than on registration ID: update database
                                     DeviceBO deviceBO = new DeviceBO();
                                     DeviceDTO device = deviceBO.searchDeviceOne(dto.getMemberId(), dto.getToken());
-                                    dto.setToken(result.getCanonicalRegistrationId());
+                                    device.setToken(result.getCanonicalRegistrationId());
+                                    device.setUpdatedDecimal(DateUtil.getCurrentTimeDecimal());
                                     deviceBO.modifyDeviceOne(device);
                                 }
                             } else {

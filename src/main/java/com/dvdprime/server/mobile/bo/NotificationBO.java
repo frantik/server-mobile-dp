@@ -16,6 +16,7 @@
 package com.dvdprime.server.mobile.bo;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ import com.dvdprime.server.mobile.util.HttpUtil;
 import com.dvdprime.server.mobile.util.StringUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * 알림 제어 로직
@@ -133,18 +135,24 @@ public class NotificationBO {
      *            댓글 내용
      * @return
      */
-    public String searchCommentKey(String url, String content) {
-        String result = null;
+    public Map<String, String> searchCommentKey(String url, String content) {
+        Map<String, String> result = null;
         try {
             String data = HttpUtil.httpConnect(url);
             if (data != null) {
-                int lastIndex = data.lastIndexOf(StringUtil.curtail(content, 80, null));
+                int lastIndex = data.lastIndexOf(StringUtil.curtail(content, 20, null));
                 if (lastIndex > -1) {
-                    data = data.substring(4000, lastIndex);
-                    lastIndex = data.lastIndexOf("anchor_");
-                    if (lastIndex > -1) {
-                        data = data.substring(lastIndex);
-                        result = StringUtil.substringBetween(data, "_", "\"");
+                    result = Maps.newHashMap();
+                    data = data.substring(40000, lastIndex);
+                    int nickIndex = data.lastIndexOf("<strong>");
+                    int cmtIndex = data.lastIndexOf("anchor_");
+                    result.put("type", nickIndex > cmtIndex ? "child" : "parent");
+                    // 닉네임 추출
+                    if (nickIndex > -1) {
+                        result.put("nick", StringUtil.substringBetween(data.substring(nickIndex), "<strong>", "</strong>"));
+                    }
+                    if (cmtIndex > -1) {
+                        result.put("cmt", StringUtil.substringBetween(data.substring(cmtIndex), "_", "\""));
                     }
                 }
             }
@@ -168,7 +176,19 @@ public class NotificationBO {
         if (request.getIds() != null && request.getMessage() != null && request.getTargetUrl() != null) {
             // 대상 아이디를 구한다.
             if (StringUtil.isBlank(request.getTargetKey())) {
-                request.setTargetKey(searchCommentKey(request.getTargetUrl(), request.getMessage()));
+                Map<String, String> keys = searchCommentKey(request.getTargetUrl(), request.getMessage());
+                String parentTmpl = "{0}님이 댓글을 남겼습니다: \"{1}\"";
+                String childTmpl = "{0}님이 덧플을 남겼습니다: \"{1}\"";
+                if (keys != null) {
+                    request.setTargetKey(keys.get("cmt"));
+                    if (keys.get("nick") != null) {
+                        if (keys.get("type").equals("parent")) {
+                            request.setMessage(StringUtil.format(parentTmpl, keys.get("nick"), request.getMessage()));
+                        } else if (keys.get("type").equals("child")) {
+                            request.setMessage(StringUtil.format(childTmpl, keys.get("nick"), request.getMessage()));
+                        }
+                    }
+                }
             }
             // DB 처리한다.
             try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {

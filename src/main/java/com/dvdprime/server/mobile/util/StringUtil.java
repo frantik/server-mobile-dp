@@ -318,6 +318,67 @@ public class StringUtil {
     }
 
     /**
+     * <pre>
+     * 여러 문자열을 치환할 경우 사용
+     * </pre>
+     * 
+     * <pre>
+     * StringUtil.format(&quot;{0} 테스트 {1}&quot;, &quot;변환&quot;, &quot;입니다&quot;) = &quot;변환 테스트 입니다&quot;
+     * </pre>
+     * 
+     * @param str
+     * @param obj
+     * @return
+     */
+    public static String format(String str, Object... obj) {
+        if (str == null || obj == null)
+            return str;
+
+        for (int i = 0; i < obj.length; i++)
+            str = replace(str, "{" + i + "}", String.valueOf(obj[i]));
+
+        return str;
+    }
+
+    /**
+     * 문자열에서 이전문자를 새 문자로 대체해서 반환
+     * 
+     * @param s
+     *            문자열
+     * @param oldSub
+     *            이전문자
+     * @param newSub
+     *            새 문자
+     * @return String 결과 문자열
+     */
+    public static String replace(String s, String oldSub, String newSub) {
+        if ((s == null) || (oldSub == null) || (newSub == null)) {
+            return null;
+        }
+
+        int y = s.indexOf(oldSub);
+
+        if (y >= 0) {
+            StringBuffer sb = new StringBuffer();
+            int length = oldSub.length();
+            int x = 0;
+
+            while (x <= y) {
+                sb.append(s.substring(x, y));
+                sb.append(newSub);
+                x = y + length;
+                y = s.indexOf(oldSub, x);
+            }
+
+            sb.append(s.substring(x));
+
+            return sb.toString();
+        } else {
+            return s;
+        }
+    }
+
+    /**
      * <p>
      * 문자열을 구분자로 나누어서, 문자열 배열로 만든다.
      * </p>
