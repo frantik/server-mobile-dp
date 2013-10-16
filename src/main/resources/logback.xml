@@ -23,22 +23,16 @@
 	<logger name="com.sun.jersey.api.container.filter" level="debug" />
 	<logger name="com.sun.jersey.spi.container.servlet" level="error" />
 
-	<!-- 배포 환경에 따른 설정파일 호출 -->
-	<include resource="/dvdprime/logback/logback-${environment}.xml" />
-
-	<property scope="local" name="environment" value="${environment}" />
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				[%d{HH:mm:ss.SSS}] [%thread] %-5level %logger{32} [%file:%line] - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
 	
 	<root>
 		<level value="debug" />
-		<if condition='property("environment").equals("local")'>
-			<then>
-				<appender-ref ref="console" />
-			</then>
-			<else>
-				<appender-ref ref="smtp" />
-				<appender-ref ref="logfile" />
-				<appender-ref ref="errorfile" />
-			</else>
-		</if>
+		<appender-ref ref="console" />
 	</root>
 </configuration>

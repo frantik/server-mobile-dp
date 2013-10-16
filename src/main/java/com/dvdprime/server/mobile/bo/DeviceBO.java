@@ -73,9 +73,12 @@ public class DeviceBO {
             try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
                 DeviceDAO dao = new DeviceDAO(sqlSession);
                 DeviceDTO dto = new DeviceDTO(request);
-                if (dao.selectDeviceCount(dto) == 0) {
-                    result = dao.insertDeviceOne(dto) > 0;
+                if (dao.selectDeviceDupsToken(dto.getToken()) > 0) {
+                    DeviceDTO removeDevice = new DeviceDTO();
+                    removeDevice.setToken(dto.getToken());
+                    dao.deleteDeviceOne(removeDevice);
                 }
+                result = dao.insertDeviceOne(dto) > 0;
             } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }

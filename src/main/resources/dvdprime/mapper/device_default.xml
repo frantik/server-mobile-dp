@@ -55,6 +55,13 @@
      </where>
     </select>
     
+	<!-- 중복 토큰 조회 -->
+    <select id="selectDeviceDupsToken" parameterType="string" resultType="int">
+    SELECT count(*) as cnt
+      FROM device_tbl
+     WHERE device_token=#{token}
+    </select>
+    
     <!-- 디바이스 추가 -->
     <insert id="insertDeviceOne" parameterType="DeviceDto">
     INSERT INTO device_tbl (member_id, device_token, device_version, creation_time, updated_time)

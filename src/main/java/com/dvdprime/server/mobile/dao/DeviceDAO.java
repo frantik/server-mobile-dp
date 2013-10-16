@@ -77,6 +77,18 @@ public class DeviceDAO {
     }
 
     /**
+     * 중복 토큰 조회
+     * 
+     * @param token
+     *            토큰
+     * @return
+     * @throws Exception
+     */
+    public int selectDeviceDupsToken(String token) throws Exception {
+        return (int) sqlSession.selectOne("Device.selectDeviceDupsToken", token);
+    }
+
+    /**
      * 디바이스 정보 추가
      * 
      * @param dto
