@@ -622,7 +622,8 @@ public class StringUtil {
                     }
                 }
             }
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
+            return "";
         }
 
         return sb.toString();
