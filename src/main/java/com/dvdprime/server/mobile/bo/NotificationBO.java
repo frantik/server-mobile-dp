@@ -179,13 +179,14 @@ public class NotificationBO {
                 Map<String, String> keys = searchCommentKey(request.getTargetUrl(), request.getMessage());
                 String parentTmpl = "{0}님이 댓글을 남겼습니다: \"{1}\"";
                 String childTmpl = "{0}님이 덧플을 남겼습니다: \"{1}\"";
+                request.setMessage(StringUtil.replace(request.getMessage(), "<br>", " "));
                 if (keys != null) {
                     request.setTargetKey(keys.get("cmt"));
                     if (keys.get("nick") != null) {
                         if (keys.get("type").equals("parent")) {
-                            request.setMessage(StringUtil.format(parentTmpl, keys.get("nick"), StringUtil.replace(request.getMessage(), "<br>", " ")));
+                            request.setMessage(StringUtil.format(parentTmpl, keys.get("nick"), request.getMessage(), "<br>", " "));
                         } else if (keys.get("type").equals("child")) {
-                            request.setMessage(StringUtil.format(childTmpl, keys.get("nick"), StringUtil.replace(request.getMessage(), "<br>", " ")));
+                            request.setMessage(StringUtil.format(childTmpl, keys.get("nick"), request.getMessage(), "<br>", " "));
                         }
                     }
                 }

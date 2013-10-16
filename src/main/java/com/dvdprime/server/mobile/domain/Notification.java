@@ -19,6 +19,7 @@ import lombok.Data;
 
 import com.dvdprime.server.mobile.model.NotificationDTO;
 import com.dvdprime.server.mobile.util.DateUtil;
+import com.dvdprime.server.mobile.util.StringUtil;
 
 /**
  * 알림 API 모델
@@ -57,7 +58,7 @@ public class Notification {
 
     public Notification(NotificationDTO dto) {
         this.title = dto.getTitle();
-        this.message = dto.getMessage();
+        this.message = StringUtil.replace(dto.getMessage(), "\n", " ");
         this.targetUrl = dto.getTargetUrl();
         this.targetKey = dto.getTargetId();
         this.readFlag = dto.getReadFlag().equals("01") ? true : false;
