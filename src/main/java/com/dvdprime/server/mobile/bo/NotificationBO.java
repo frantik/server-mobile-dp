@@ -183,9 +183,9 @@ public class NotificationBO {
                     request.setTargetKey(keys.get("cmt"));
                     if (keys.get("nick") != null) {
                         if (keys.get("type").equals("parent")) {
-                            request.setMessage(StringUtil.format(parentTmpl, keys.get("nick"), StringUtil.replace(request.getMessage(), "\n", " ")));
+                            request.setMessage(StringUtil.format(parentTmpl, keys.get("nick"), StringUtil.replace(request.getMessage(), "<br>", " ")));
                         } else if (keys.get("type").equals("child")) {
-                            request.setMessage(StringUtil.format(childTmpl, keys.get("nick"), StringUtil.replace(request.getMessage(), "\n", " ")));
+                            request.setMessage(StringUtil.format(childTmpl, keys.get("nick"), StringUtil.replace(request.getMessage(), "<br>", " ")));
                         }
                     }
                 }
