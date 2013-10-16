@@ -390,7 +390,7 @@
 			<properties>
 				<environment>production</environment>
 				<log4j.logs.path>/home/frantik/project/logs/</log4j.logs.path>
-				<war.output.directory>/home/frantik/project/</war.output.directory>
+				<war.output.directory>/usr/local/tomcat/webapps/</war.output.directory>
 			</properties>
 		</profile>
 	</profiles>
