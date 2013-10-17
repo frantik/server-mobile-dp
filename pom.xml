@@ -155,7 +155,7 @@
 				<configuration>
 					<path>/</path>
 					<url>http://localhost:80/manager/html</url>
-					<server>dpServer</server>
+					<server>dp-tomcat</server>
 					<warFile>${project.build.directory}/ROOT.war</warFile>
 				</configuration>
 			</plugin>
