@@ -76,9 +76,9 @@ public class DeviceDTO {
     //
     // ////////////////////////////////////////////////////////////////////
     public DeviceDTO() {}
-
+    
     public DeviceDTO(String id, String token) {
-        this.memberId = id;
+        this.memberId = id == null ? id : id.trim();
         this.token = token;
     }
 

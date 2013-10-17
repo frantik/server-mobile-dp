@@ -53,7 +53,7 @@ public class DeviceRequest {
     public DeviceRequest() {}
 
     public DeviceRequest(String id, String token, String version) {
-        this.id = id;
+        this.id = id == null ? id : id.trim();
         this.deviceToken = token;
         this.version = version;
     }

@@ -76,7 +76,7 @@ public class NotificationRequest {
     public NotificationRequest() {}
 
     public NotificationRequest(String ids, String type, String title, String message, String targetUrl, String targetKey) {
-        this.ids = ids;
+        this.ids = ids == null ? ids : ids.trim();
         this.type = type;
         this.title = title;
         this.message = message;
@@ -85,7 +85,7 @@ public class NotificationRequest {
     }
 
     public NotificationRequest(String id, int page, int limit, long startTime) {
-        this.id = id;
+        this.id = id == null ? id : id.trim();
         this.page = page;
         this.limit = limit;
         this.startTime = startTime == 0L ? new Date().getTime() : startTime;

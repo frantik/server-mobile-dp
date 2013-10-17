@@ -82,7 +82,7 @@ public class FilterDTO {
     }
 
     public FilterDTO(String memberId, String targetId) {
-        this.memberId = memberId;
+        this.memberId = memberId == null ? memberId : memberId.trim();
         this.targetId = targetId;
     }
 

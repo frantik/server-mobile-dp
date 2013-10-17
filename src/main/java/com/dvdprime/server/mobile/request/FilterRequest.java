@@ -47,7 +47,7 @@ public class FilterRequest {
     public FilterRequest() {}
 
     public FilterRequest(String id, String targetId, String targetNick) {
-        this.id = id;
+        this.id = id == null ? id : id.trim();
         this.targetId = targetId;
         this.targetNick = targetNick;
     }
