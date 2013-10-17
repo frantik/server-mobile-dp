@@ -156,7 +156,7 @@
 					<path>/</path>
 					<url>http://localhost:80/manager/html</url>
 					<server>dpServer</server>
-					<warFile>/home/frantik/project/ROOT.war</warFile>
+					<warFile>${project.build.directory}/ROOT.war</warFile>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -392,7 +392,6 @@
 			<id>development</id>
 			<properties>
 				<environment>local</environment>
-				<war.output.directory>${project.build.directory}</war.output.directory>
 			</properties>
 		</profile>
 		<!-- Server -->
@@ -401,7 +400,6 @@
 			<properties>
 				<environment>production</environment>
 				<log4j.logs.path>/home/frantik/project/logs/</log4j.logs.path>
-				<war.output.directory>/home/frantik/project/</war.output.directory>
 			</properties>
 		</profile>
 	</profiles>
