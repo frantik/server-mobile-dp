@@ -134,10 +134,16 @@ public class NotificationWorker {
                                 if (result.getCanonicalRegistrationId() != null) {
                                     // devices.get(i) has more than on registration ID: update database
                                     DeviceBO deviceBO = new DeviceBO();
-                                    DeviceDTO device = deviceBO.searchDeviceOne(dto.getMemberId(), dto.getToken());
-                                    device.setToken(result.getCanonicalRegistrationId());
-                                    device.setUpdatedDecimal(DateUtil.getCurrentTimeDecimal());
-                                    deviceBO.modifyDeviceOne(device);
+                                    if (deviceBO.searchDeviceOne(null, result.getCanonicalRegistrationId()) != null) {
+                                        deviceBO.removeDeviceOne(new DeviceDTO(dto.getMemberId(), result.getCanonicalRegistrationId()));
+                                    } else {
+                                        DeviceDTO device = deviceBO.searchDeviceOne(dto.getMemberId(), dto.getToken());
+                                        if (device != null) {
+                                            device.setToken(result.getCanonicalRegistrationId());
+                                            device.setUpdatedDecimal(DateUtil.getCurrentTimeDecimal());
+                                            deviceBO.modifyDeviceOne(device);
+                                        }
+                                    }
                                 }
                             } else {
                                 logger.info("Android Push Error Result : [{}]{}", dto.getSeq(), result.getErrorCodeName());
