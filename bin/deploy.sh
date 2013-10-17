@@ -4,6 +4,6 @@ echo "Starting tomcat7:redeploy"
 
 cd $HOME
 
-echo "mvn clean package tomcat7:redeploy -P production -X"
+echo "mvn clean package tomcat7:redeploy -P production"
 
-mvn clean package tomcat7:redeploy -P production -X
+mvn clean package tomcat7:redeploy -P production
