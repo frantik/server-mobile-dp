@@ -154,10 +154,8 @@
 				<version>2.1</version>
 				<configuration>
 					<path>/</path>
-					<url>http://127.0.0.1/manager/html</url>
+					<url>http://localhost:80/manager/html</url>
 					<server>dpServer</server>
-					<username></username>
-					<password></password>
 					<warFile>/home/frantik/project/ROOT.war</warFile>
 				</configuration>
 			</plugin>
