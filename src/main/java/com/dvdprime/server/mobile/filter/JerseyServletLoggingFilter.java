@@ -348,14 +348,14 @@ public class JerseyServletLoggingFilter implements Filter {
             return original.encodeRedirectURL(url);
         }
 
-        @SuppressWarnings("deprecation")
         @Override
+        @Deprecated
         public String encodeUrl(String url) {
             return original.encodeUrl(url);
         }
 
-        @SuppressWarnings("deprecation")
         @Override
+        @Deprecated
         public String encodeRedirectUrl(String url) {
             return original.encodeRedirectUrl(url);
         }
@@ -410,8 +410,8 @@ public class JerseyServletLoggingFilter implements Filter {
             original.setStatus(sc);
         }
 
-        @SuppressWarnings("deprecation")
         @Override
+        @Deprecated
         public void setStatus(int sc, String sm) {
             original.setStatus(sc, sm);
         }
