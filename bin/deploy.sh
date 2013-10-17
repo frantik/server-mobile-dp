@@ -1,6 +1,6 @@
 HOME=/home/frantik/project/server-mobile-dp
 
-echo "Starting tomcat7:redeploy"
+echo "Starting deploy"
 
 cd $HOME
 
