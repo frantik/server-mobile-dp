@@ -135,7 +135,7 @@ public class NotificationWorker {
                                     // devices.get(i) has more than on registration ID: update database
                                     DeviceBO deviceBO = new DeviceBO();
                                     if (deviceBO.searchDeviceOne(null, result.getCanonicalRegistrationId()) != null) {
-                                        deviceBO.removeDeviceOne(new DeviceDTO(dto.getMemberId(), result.getCanonicalRegistrationId()));
+                                        deviceBO.removeDeviceOne(new DeviceDTO(dto.getMemberId(), dto.getToken()));
                                     } else {
                                         DeviceDTO device = deviceBO.searchDeviceOne(dto.getMemberId(), dto.getToken());
                                         if (device != null) {

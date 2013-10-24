@@ -48,7 +48,7 @@ public class DeviceBO {
     public DeviceDTO searchDeviceOne(String memberId, String token) {
         DeviceDTO result = null;
 
-        if (memberId != null && token != null) {
+        if (token != null) {
             try (SqlSession sqlSession = DaoFactory.getInstance().openSession()) {
                 result = new DeviceDAO(sqlSession).selectDeviceOne(new DeviceDTO(memberId, token));
             } catch (Exception e) {
