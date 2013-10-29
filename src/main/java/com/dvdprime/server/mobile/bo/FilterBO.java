@@ -26,6 +26,7 @@ import com.dvdprime.server.mobile.domain.Filter;
 import com.dvdprime.server.mobile.factory.DaoFactory;
 import com.dvdprime.server.mobile.model.FilterDTO;
 import com.dvdprime.server.mobile.request.FilterRequest;
+import com.dvdprime.server.mobile.util.StringUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
@@ -78,7 +79,7 @@ public class FilterBO {
     public boolean creationFilterOne(FilterRequest request) {
         boolean result = false;
 
-        if (request.getId() != null && request.getTargetId() != null && request.getTargetNick() != null) {
+        if (StringUtil.isNotBlank(request.getId()) && StringUtil.isNotBlank(request.getTargetId()) && StringUtil.isNotBlank(request.getTargetNick())) {
             try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
                 FilterDAO dao = new FilterDAO(sqlSession);
                 FilterDTO dto = new FilterDTO(request);
@@ -105,7 +106,7 @@ public class FilterBO {
     public boolean removeFilterOne(String memberId, String targetId) {
         boolean result = false;
 
-        if (memberId != null && targetId != null) {
+        if (StringUtil.isNotBlank(memberId) && StringUtil.isNotBlank(targetId)) {
             try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
                 FilterDAO dao = new FilterDAO(sqlSession);
                 if (targetId.contains(",")) {
