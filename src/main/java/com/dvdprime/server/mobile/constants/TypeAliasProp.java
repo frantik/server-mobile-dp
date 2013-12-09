@@ -42,6 +42,7 @@ public class TypeAliasProp {
             properties.put("ConfigDto", "com.dvdprime.server.mobile.model.ConfigDTO");
             properties.put("DeviceDto", "com.dvdprime.server.mobile.model.DeviceDTO");
             properties.put("FilterDto", "com.dvdprime.server.mobile.model.FilterDTO");
+            properties.put("MemberDto", "com.dvdprime.server.mobile.model.MemberDTO");
             properties.put("NotificationDto", "com.dvdprime.server.mobile.model.NotificationDTO");
         }
         return properties;

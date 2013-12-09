@@ -32,8 +32,8 @@ public class NoticationBOTest {
     public void searchCommentKey() {
         Map<String, String> result = Maps.newHashMap();
         try {
-            String data = HttpUtil.httpConnect("http://dvdprime.donga.com/bbs/view.asp?major=ME&minor=E1&master_id=40&bbsfword_id=&master_sel=&fword_sel=&SortMethod=&SearchCondition=&SearchConditionTxt=&bbslist_id=2378141&page=1");
-            String content = "좋은 프로그램 감사합니다.\n\n시간이 되시면 폰트 크기 조절하는 기능을 추가해주십시요.\n\n글씨가 너무 적..";
+            String data = HttpUtil.httpConnect("http://dvdprime.donga.com/bbs/view.asp?major=ME&minor=E1&master_id=127&bbsfword_id=&master_sel=&fword_sel=&SortMethod=&SearchCondition=&SearchConditionTxt=&bbslist_id=2378549&page=1");
+            String content = "npc입니다^^;<br>고급 주택 안쪽으로 들어가보면 수영장에서 토플리스 차림으로 일광욕중인 여자들이 있는..";
             if (data != null) {
                 int lastIndex = data.lastIndexOf(StringUtil.curtail(content, 20, null));
                 if (lastIndex > -1) {

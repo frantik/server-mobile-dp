@@ -45,6 +45,8 @@ public class MapperProp {
             properties.put("deviceDefault", "dvdprime/mapper/device_default.xml");
             properties.put("filterResultmap", "dvdprime/mapper/filter_resultmap.xml");
             properties.put("filterDefault", "dvdprime/mapper/filter_default.xml");
+            properties.put("memberResultmap", "dvdprime/mapper/member_resultmap.xml");
+            properties.put("memberDefault", "dvdprime/mapper/member_default.xml");
             properties.put("notificationResultmap", "dvdprime/mapper/notification_resultmap.xml");
             properties.put("notificationDefault", "dvdprime/mapper/notification_default.xml");
         }
