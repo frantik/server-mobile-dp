@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Member">
 
-	<!-- 나쁜 회원 목록 조회 -->
+	<!-- 차단 회원 목록 조회 -->
     <select id="selectMemberList" resultMap="MemberMap.default-map">
     SELECT member_id,
            DATE_FORMAT(creation_time, '%Y/%m/%d %H:%i:%s') as creation_time
@@ -13,6 +13,13 @@
            </if>
      </where>
      ORDER BY creation_time DESC
+    </select>
+    
+	<!-- 차단 회원 갯수 조회 -->
+    <select id="selectMemberCount" parameterType="String" resultType="int">
+    SELECT count(*) as cnt
+      FROM bad_member_tbl
+     WHERE member_id=#{memberId}
     </select>
     
     <!-- 회원 추가 -->

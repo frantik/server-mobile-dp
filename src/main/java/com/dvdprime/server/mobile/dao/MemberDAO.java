@@ -32,16 +32,14 @@ import com.dvdprime.server.mobile.model.MemberDTO;
  * @history
  */
 @Data
-public class MemberDAO
-{
-    
+public class MemberDAO {
+
     private SqlSession sqlSession;
-    
-    public MemberDAO(SqlSession sqlSession)
-    {
+
+    public MemberDAO(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
-    
+
     /**
      * 회원 목록 조회
      * 
@@ -50,11 +48,22 @@ public class MemberDAO
      * @return
      * @throws Exception
      */
-    public List<MemberDTO> selectMemberList(MemberDTO dto) throws Exception
-    {
+    public List<MemberDTO> selectMemberList(MemberDTO dto) throws Exception {
         return sqlSession.selectList("Member.selectMemberList", dto);
     }
-    
+
+    /**
+     * 차단 회원 카운트 조회
+     * 
+     * @param memberId
+     *            회원 아이디
+     * @return
+     * @throws Exception
+     */
+    public int selectMemberCount(String memberId) throws Exception {
+        return (int) sqlSession.selectOne("Member.selectMemberCount", memberId);
+    }
+
     /**
      * 회원 정보 추가
      * 
@@ -63,11 +72,10 @@ public class MemberDAO
      * @return
      * @throws Exception
      */
-    public int insertMemberOne(MemberDTO dto) throws Exception
-    {
+    public int insertMemberOne(MemberDTO dto) throws Exception {
         return sqlSession.insert("Member.insertMemberOne", dto);
     }
-    
+
     /**
      * 회원 정보 삭제
      * 
@@ -76,9 +84,8 @@ public class MemberDAO
      * @return
      * @throws Exception
      */
-    public int deleteMemberOne(String memberId) throws Exception
-    {
+    public int deleteMemberOne(String memberId) throws Exception {
         return sqlSession.update("Member.deleteMemberOne", memberId);
     }
-    
+
 }

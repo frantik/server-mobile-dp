@@ -23,32 +23,27 @@ import com.sun.jersey.api.view.Viewable;
  */
 @Path("/web/members")
 @Produces(MediaType.TEXT_HTML)
-public class MembersWebView
-{
+public class MembersWebView {
     /** Logger */
     private Logger logger = LoggerFactory.getLogger(MembersWebView.class);
-    
+
     @Context
     HttpServletRequest request;
-    
+
     /**
      * 회원 목록 화면
      * 
      * @return
      */
     @GET
-    public Viewable doGet()
-    {
-        try
-        {
-            request.setAttribute("memberList", new MemberBO().searchDeviceList(null));
+    public Viewable doGet() {
+        try {
+            request.setAttribute("memberList", new MemberBO().searchMemberList(null));
             return new Viewable("/member/memberList.jsp");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             return new Viewable("/index.jsp");
         }
     }
-    
+
 }

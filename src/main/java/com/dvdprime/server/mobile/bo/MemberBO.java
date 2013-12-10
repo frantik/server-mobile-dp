@@ -34,32 +34,48 @@ import com.dvdprime.server.mobile.util.StringUtil;
  * @created 2013. 10. 8. 오후 11:58:10
  * @history
  */
-public class MemberBO
-{
+public class MemberBO {
     /** Logger */
     private Logger logger = LoggerFactory.getLogger(MemberBO.class);
-    
+
     /**
      * 회원 목록
      * 
      * @return
      */
-    public List<MemberDTO> searchDeviceList(MemberDTO dto)
-    {
+    public List<MemberDTO> searchMemberList(MemberDTO dto) {
         List<MemberDTO> mResult = null;
-        
-        try (SqlSession sqlSession = DaoFactory.getInstance().openSession())
-        {
+
+        try (SqlSession sqlSession = DaoFactory.getInstance().openSession()) {
             mResult = new MemberDAO(sqlSession).selectMemberList(dto);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
         }
-        
+
         return mResult;
     }
-    
+
+    /**
+     * 차단 회원 카운트 조회
+     * 
+     * @param memberId
+     *            회원 아이디
+     * @return
+     */
+    public int searchMemberCount(String memberId) {
+        int result = 0;
+
+        if (memberId != null) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession()) {
+                result = new MemberDAO(sqlSession).selectMemberCount(memberId);
+            } catch (Exception e) {
+                logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
+            }
+        }
+
+        return result;
+    }
+
     /**
      * 회원 정보 추가
      * 
@@ -67,25 +83,20 @@ public class MemberBO
      *            {@link MemberDTO}
      * @return
      */
-    public boolean creationMemberOne(MemberDTO dto)
-    {
+    public boolean creationMemberOne(MemberDTO dto) {
         boolean result = false;
-        
-        if (StringUtil.isNotBlank(dto.getMemberId()))
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
-            {
+
+        if (StringUtil.isNotBlank(dto.getMemberId())) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
                 result = new MemberDAO(sqlSession).insertMemberOne(dto) > 0;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }
-        
+
         return result;
     }
-    
+
     /**
      * 회원 정보 삭제
      * 
@@ -93,22 +104,17 @@ public class MemberBO
      *            회원 아이디
      * @return
      */
-    public boolean removeMemberOne(String memberId)
-    {
+    public boolean removeMemberOne(String memberId) {
         boolean result = false;
-        
-        if (StringUtil.isNotBlank(memberId))
-        {
-            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true))
-            {
+
+        if (StringUtil.isNotBlank(memberId)) {
+            try (SqlSession sqlSession = DaoFactory.getInstance().openSession(true)) {
                 result = new MemberDAO(sqlSession).deleteMemberOne(memberId) > 0;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 logger.error("caught a " + e.getClass() + " with message: " + e.getMessage(), e);
             }
         }
-        
+
         return result;
     }
 }
