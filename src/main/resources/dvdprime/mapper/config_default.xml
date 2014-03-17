@@ -3,7 +3,7 @@
 <mapper namespace="Config">
 
 	<!-- 설정 목록 조회 -->
-    <select id="selectConfigList" parameterType="ConfigDto" resultMap="ConfigMap.default-map">
+    <select id="selectConfigList" parameterType="com.dvdprime.server.mobile.model.ConfigDTO" resultMap="ConfigMap.default-map">
     SELECT config_seq,
            member_id,
            config_type,
@@ -22,7 +22,7 @@
     </select>
     
 	<!-- 설정 갯수 조회 -->
-    <select id="selectConfigCount" parameterType="ConfigDto" resultType="int">
+    <select id="selectConfigCount" parameterType="com.dvdprime.server.mobile.model.ConfigDTO" resultType="int">
     SELECT count(*) as cnt
       FROM config_tbl
      <where>
@@ -36,13 +36,13 @@
     </select>
     
     <!-- 설정 추가 -->
-    <insert id="insertConfigOne" parameterType="ConfigDto">
+    <insert id="insertConfigOne" parameterType="com.dvdprime.server.mobile.model.ConfigDTO">
     INSERT INTO config_tbl (member_id, config_type, config_enabled, creation_time, updated_time)
     VALUES (#{memberId}, #{type}, #{enabled}, #{creationDecimal}, #{updatedDecimal})
     </insert>
     
     <!-- 설정 변경 -->
-    <update id="updateConfigOne" parameterType="ConfigDto">
+    <update id="updateConfigOne" parameterType="com.dvdprime.server.mobile.model.ConfigDTO">
     UPDATE config_tbl
        SET updated_time=#{updatedDecimal}
              <if test="!empty(enabled)">

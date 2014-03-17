@@ -4,8 +4,8 @@
 <comment>db.properties</comment>
 
 <!-- MySQL -->
-<entry key="jdbc.mysql.url"></entry>
-<entry key="jdbc.mysql.username"></entry>
-<entry key="jdbc.mysql.password"></entry>
+<entry key="jdbc.mysql.url">jdbc:mysql://192.241.229.79:33306/dvdprime</entry>
+<entry key="jdbc.mysql.username">dp</entry>
+<entry key="jdbc.mysql.password">cba101</entry>
 
 </properties>

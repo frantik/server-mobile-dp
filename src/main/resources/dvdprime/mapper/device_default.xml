@@ -3,7 +3,7 @@
 <mapper namespace="Device">
 
 	<!-- 디바이스 목록 조회 -->
-    <select id="selectDeviceList" parameterType="DeviceDto" resultMap="DeviceMap.default-map">
+    <select id="selectDeviceList" parameterType="com.dvdprime.server.mobile.model.DeviceDTO" resultMap="DeviceMap.default-map">
     SELECT device_seq,
            member_id,
            device_token,
@@ -22,7 +22,7 @@
     </select>
     
     <!-- 디바이스 정보 조회 -->
-    <select id="selectDeviceOne" parameterType="DeviceDto" resultMap="DeviceMap.default-map">
+    <select id="selectDeviceOne" parameterType="com.dvdprime.server.mobile.model.DeviceDTO" resultMap="DeviceMap.default-map">
     SELECT device_seq,
            member_id,
            device_token,
@@ -42,7 +42,7 @@
     </select>
     
 	<!-- 디바이스 갯수 조회 -->
-    <select id="selectDeviceCount" parameterType="DeviceDto" resultType="int">
+    <select id="selectDeviceCount" parameterType="com.dvdprime.server.mobile.model.DeviceDTO" resultType="int">
     SELECT count(*) as cnt
       FROM device_tbl
      <where>
@@ -63,13 +63,13 @@
     </select>
     
     <!-- 디바이스 추가 -->
-    <insert id="insertDeviceOne" parameterType="DeviceDto">
+    <insert id="insertDeviceOne" parameterType="com.dvdprime.server.mobile.model.DeviceDTO">
     INSERT INTO device_tbl (member_id, device_token, device_version, creation_time, updated_time)
     VALUES (#{memberId}, #{token}, #{version}, #{creationDecimal}, #{updatedDecimal})
     </insert>
     
     <!-- 디바이스 수정 -->
-    <update id="updateDeviceOne" parameterType="DeviceDto">
+    <update id="updateDeviceOne" parameterType="com.dvdprime.server.mobile.model.DeviceDTO">
     UPDATE device_tbl
        SET updated_time=#{updatedDecimal}
              <if test="!empty(token)">
@@ -90,7 +90,7 @@
     </update>
     
     <!-- 디바이스 정보 삭제 -->
-    <delete id="deleteDeviceOne" parameterType="DeviceDto">
+    <delete id="deleteDeviceOne" parameterType="com.dvdprime.server.mobile.model.DeviceDTO">
     DELETE FROM device_tbl
      <where>
         <if test="!empty(memberId)">

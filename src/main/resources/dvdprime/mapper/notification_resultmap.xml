@@ -3,7 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="NotificationMap">
 
-    <resultMap id="default-map" type="NotificationDto">
+    <resultMap id="default-map" type="com.dvdprime.server.mobile.model.NotificationDTO">
         <id property="seq" column="notification_seq" javaType="int" />
         <result property="memberId" column="member_id"/>
         <result property="type" column="notification_type"/>
@@ -17,7 +17,7 @@
         <result property="updatedTime" column="updated_time" javaType="long" />
     </resultMap>
     
-    <resultMap id="worker-map" type="NotificationDto">
+    <resultMap id="worker-map" type="com.dvdprime.server.mobile.model.NotificationDTO">
         <result property="seq" column="notification_seq" javaType="int" />
         <result property="memberId" column="member_id"/>
         <result property="type" column="notification_type"/>

@@ -3,7 +3,7 @@
 <mapper namespace="Filter">
 
 	<!-- 필터 목록 조회 -->
-    <select id="selectFilterList" parameterType="FilterDto" resultMap="FilterMap.default-map">
+    <select id="selectFilterList" parameterType="com.dvdprime.server.mobile.model.FilterDTO" resultMap="FilterMap.default-map">
     SELECT filter_seq,
            member_id,
            target_id,
@@ -19,7 +19,7 @@
     </select>
     
 	<!-- 필터 갯수 조회 -->
-    <select id="selectFilterCount" parameterType="FilterDto" resultType="int">
+    <select id="selectFilterCount" parameterType="com.dvdprime.server.mobile.model.FilterDTO" resultType="int">
     SELECT count(*) as cnt
       FROM filter_tbl
      <where>
@@ -33,13 +33,13 @@
     </select>
     
     <!-- 필터 추가 -->
-    <insert id="insertFilterOne" parameterType="FilterDto">
+    <insert id="insertFilterOne" parameterType="com.dvdprime.server.mobile.model.FilterDTO">
     INSERT INTO filter_tbl (member_id, target_id, target_nick, creation_time, updated_time)
     VALUES (#{memberId}, #{targetId}, #{targetNick}, #{creationDecimal}, #{updatedDecimal})
     </insert>
     
     <!-- 필터 삭제 -->
-    <delete id="deleteFilterOne" parameterType="FilterDto">
+    <delete id="deleteFilterOne" parameterType="com.dvdprime.server.mobile.model.FilterDTO">
     DELETE FROM filter_tbl
      <where>
         <if test="seq > 0">

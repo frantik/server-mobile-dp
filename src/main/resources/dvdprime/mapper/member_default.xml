@@ -23,7 +23,7 @@
     </select>
     
     <!-- 회원 추가 -->
-    <insert id="insertMemberOne" parameterType="MemberDto">
+    <insert id="insertMemberOne" parameterType="com.dvdprime.server.mobile.model.MemberDTO">
     INSERT INTO bad_member_tbl (member_id, creation_time, updated_time)
     VALUES (#{memberId}, #{creationTime}, #{creationTime})
     </insert>

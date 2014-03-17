@@ -3,7 +3,7 @@
 <mapper namespace="Notification">
 
 	<!-- 알림 목록 조회 -->
-    <select id="selectNotificationList" parameterType="NotificationDto" resultMap="NotificationMap.default-map">
+    <select id="selectNotificationList" parameterType="com.dvdprime.server.mobile.model.NotificationDTO" resultMap="NotificationMap.default-map">
     SELECT notification_seq,
            member_id,
            notification_type,
@@ -63,7 +63,7 @@
     </select>
     
 	<!-- 알림 갯수 조회 -->
-    <select id="selectNotificationCount" parameterType="NotificationDto" resultType="int">
+    <select id="selectNotificationCount" parameterType="com.dvdprime.server.mobile.model.NotificationDTO" resultType="int">
     SELECT count(*) as cnt
       FROM notification_tbl
      <where>
@@ -83,13 +83,13 @@
     </select>
     
     <!-- 알림 추가 -->
-    <insert id="insertNotificationOne" parameterType="NotificationDto">
+    <insert id="insertNotificationOne" parameterType="com.dvdprime.server.mobile.model.NotificationDTO">
     INSERT INTO notification_tbl (member_id, notification_type, notification_dups, notification_title, notification_message, notification_target_url, notification_target_id, creation_time, updated_time)
     VALUES (#{memberId}, #{type}, #{dups}, #{title}, #{message}, #{targetUrl}, #{targetId}, #{creationDecimal}, #{updatedDecimal})
     </insert>
     
     <!-- 알림 수정 -->
-    <update id="updateNotificationOne" parameterType="NotificationDto">
+    <update id="updateNotificationOne" parameterType="com.dvdprime.server.mobile.model.NotificationDTO">
     UPDATE notification_tbl
        SET updated_time=#{updatedDecimal}
            <if test="!empty(status)">

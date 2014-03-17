@@ -3,7 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="DeviceMap">
 
-    <resultMap id="default-map" type="DeviceDto">
+    <resultMap id="default-map" type="com.dvdprime.server.mobile.model.DeviceDTO">
         <id property="seq" column="device_seq" javaType="int" />
         <result property="memberId" column="member_id"/>
         <result property="token" column="device_token"/>
